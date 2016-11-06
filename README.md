@@ -1,6 +1,6 @@
 # Call of Pudge: Modern Hookfare
 
-## Developer Notes
+## Development Notes
 This repository can be directly imported into Eclipse. If you don't know how to import projects into Eclipse via git, read this [stackoverflow answer by VonC](http://stackoverflow.com/questions/6760115/importing-a-github-project-into-eclipse/6760785#6760785).
 
 If you want to import the project manually, you can do so:
