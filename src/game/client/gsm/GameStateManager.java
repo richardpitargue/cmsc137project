@@ -1,6 +1,7 @@
 package game.client.gsm;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.util.Stack;
 
 public class GameStateManager {
@@ -30,6 +31,18 @@ public class GameStateManager {
 		
 		states.push(nextState);
 		states.peek().onEnter();
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		states.peek().keyTyped(e.getKeyCode());
+	}
+
+	public void keyPressed(KeyEvent e) {
+		states.peek().keyPressed(e.getKeyCode());
+	}
+
+	public void keyReleased(KeyEvent e) {
+		states.peek().keyReleased(e.getKeyCode());
 	}
 	
 }

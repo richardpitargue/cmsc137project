@@ -28,4 +28,22 @@ public class MenuState extends State {
 		
 	}
 
+	@Override
+	public void keyTyped(int keyCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(int keyCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int keyCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -14,5 +14,8 @@ public abstract class State {
 	public abstract void update(double delta);
 	public abstract void draw(Graphics2D g); 
 	public abstract void onExit();
+	public abstract void keyTyped(int keyCode);
+	public abstract void keyPressed(int keyCode);
+	public abstract void keyReleased(int keyCode);
 	
 }
