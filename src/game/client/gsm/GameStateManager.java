@@ -20,13 +20,19 @@ public class GameStateManager {
 		states.peek().draw(g);
 	}
 	
+	public void pop() {
+		states.peek().onExit();
+		states.pop();
+	}
+	
 	public void changeState(State nextState, boolean shouldPop) {
 		if(states.size() > 0) {
 			states.peek().onExit();
 		}
 		
 		if(states.size() > 0 && shouldPop) {
-			states.pop();
+			State poppedState = states.pop();
+			poppedState.onExit();
 		}
 		
 		states.push(nextState);

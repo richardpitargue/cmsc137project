@@ -16,8 +16,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final int WIDTH = 400;
-	public static final int HEIGHT = 300;
+	public static final int WIDTH = 600;
+	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
 	
 	private Thread gameThread;
@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		
 		gsm = new GameStateManager();
 		gsm.changeState(new MenuState(gsm), false);
+		
+		addKeyListener(this);
 		
 		start();
 	}
@@ -104,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+		gsm.keyPressed(e);
 	}
 
 	@Override
