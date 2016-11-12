@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			
 			lastFPSTime += updateLength;
 			if(lastFPSTime >= 1000000000) {
-				System.out.println("FPS: " + fps);
+				//System.out.println("FPS: " + fps);
 				fps = 0;
 				lastFPSTime = 0;
 			}

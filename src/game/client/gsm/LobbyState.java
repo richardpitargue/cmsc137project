@@ -3,7 +3,9 @@ package game.client.gsm;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
+import game.client.Game;
 import game.client.GamePanel;
+import game.server.GameServer;
 
 public class LobbyState extends State {
 
@@ -42,6 +44,14 @@ public class LobbyState extends State {
 	public void keyPressed(int keyCode) {
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
+		}
+		if(keyCode == KeyEvent.VK_S)
+		{
+			gsm.changeState(new GameServer(gsm,2), false);
+		}
+		if(keyCode == KeyEvent.VK_C)
+		{
+			gsm.changeState(new Game(gsm,"127.0.0.1"), false);
 		}
 	}
 
