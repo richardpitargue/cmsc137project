@@ -43,7 +43,10 @@ public class GameServer extends State{
 		for(int i = 0; i < serverT.players.length;i++)
 		{
 			if(serverT.players[i]!=null)
-			g.drawString(serverT.players[i].getName(), 100+i*10, 10);
+			{
+				g.drawString(serverT.players[i].print(), 100, 10+(i+1)*20);
+				
+			}
 		}
 	}
 

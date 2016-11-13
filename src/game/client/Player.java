@@ -55,5 +55,13 @@ public class Player implements Serializable
 	{
 		this.frame = frame;
 	}
+	public void changeAddress(InetAddress address)
+	{
+		this.address = address;
+	}
+	public String print()
+	{
+		return(name + " "+ x + " " + y + " " + address + " " + port);
+	}
 	
 }

@@ -51,7 +51,7 @@ public class LobbyState extends State {
 		}
 		if(keyCode == KeyEvent.VK_C)
 		{
-			gsm.changeState(new Game(gsm,"127.0.0.1"), false);
+			gsm.changeState(new Game(gsm,"127.0.0.1",1233,1234,"Anton"), false);
 		}
 	}
 

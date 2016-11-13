@@ -31,8 +31,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	public GamePanel() {
 		super();
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		setFocusable(true);
-		requestFocus();
+		
+		
 		
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D) image.getGraphics();
@@ -41,7 +41,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		gsm.changeState(new MenuState(gsm), false);
 		
 		addKeyListener(this);
-		
+		setFocusable(true);
+		requestFocus();
 		start();
 	}
 	

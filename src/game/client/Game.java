@@ -1,6 +1,8 @@
 package game.client;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,75 +20,25 @@ import javax.swing.JFrame;
 import game.client.gsm.GameStateManager;
 import game.client.gsm.State;
 
-public class Game extends State implements Runnable{
+public class Game extends State {
+	
+	Client client;
+	Player player;
 	
 
-	private DatagramSocket serverSocket = null;
-	private boolean isConnected = false;
-	private Player player;
-	private Player[] players;
-	private int port = 1234;
-	private String server;
-
 	
-	public Game(GameStateManager gsm, String server) {
+	public Game(GameStateManager gsm, String server, int port, int serverPort, String playerName) {
 		super(gsm);
-		this.server = server;
-		
-		// TODO Auto-generated constructor stub
+		this.player = new Player(playerName, null, port);
+		this.client = new Client(server,port,serverPort,this.player);
 	}
-	public void send()
-	{
-		try{
-			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			ObjectOutput oo = new ObjectOutputStream(bStream); 
-			oo.writeObject(this.player);
-			oo.close();
-			System.out.println("test");
-			byte[] buf = new byte[256]; 
-			buf = bStream.toByteArray();
-        	InetAddress address = InetAddress.getByName(server);
-        	DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-        	serverSocket.send(packet);
-        	System.out.println("sent");
-        }catch(Exception e){}
-	}
-	@Override
-	public void run() {
-		while(true)
-		{
-			while(!isConnected)
-			{
-			
-				
-				try {
-					player = new Player("player",InetAddress.getByName(server),port);
-					System.out.println("Connected");
-					isConnected = true;
-					send();
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-					
-			}
-			System.out.println("I'm Connected");
-			while(isConnected)
-			{
-				
-			}
-			
-		
-		}
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 
 	@Override
 	public void onEnter() {
 		// TODO Auto-generated method stub
-		run();
+		this.client.run();
 	}
 
 	@Override
@@ -98,8 +50,16 @@ public class Game extends State implements Runnable{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
+
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+		if(client.players == null)
 		g.drawString("Welcome Client", 50, 10);
+		
+		if(client.players != null)
+		for(int i = 0; i < client.players.length; i++)
+		{
+			g.drawString(client.players[i].getName(), client.players[i].getX() + 50, client.players[i].getY() + 10);
+		}
 	}
 
 	@Override
@@ -117,9 +77,43 @@ public class Game extends State implements Runnable{
 	@Override
 	public void keyPressed(int keyCode) {
 		// TODO Auto-generated method stub
+		System.out.println(keyCode);
 		
+		if(keyCode == KeyEvent.VK_W)
+			move("up");
+		if(keyCode == KeyEvent.VK_S)
+			move("down");
+		if(keyCode == KeyEvent.VK_A)
+			move("left");
+		if(keyCode == KeyEvent.VK_D)
+			move("right");
 	}
 
+	private void move(String move) {
+		// TODO Auto-generated method stub
+		
+		int i;
+		for(i = 0; i < client.players.length; i++)
+			if(client.players[i] == this.player)
+				break;
+		switch(move)
+		{
+		case "up":
+			client.players[i].setY(client.players[i].getY() - 1);
+			break;
+		case "down":
+			client.players[i].setY(client.players[i].getY() + 1);
+			break;
+		case "left":
+			client.players[i].setX(client.players[i].getX() - 1);
+			break;
+		case "right":
+			client.players[i].setX(client.players[i].getX() + 1);
+			break;
+		}
+		
+		System.out.println("Moved " + move);
+	}
 	@Override
 	public void keyReleased(int keyCode) {
 		// TODO Auto-generated method stub
