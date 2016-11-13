@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gsm.changeState(new MenuState(gsm), false);
 		
 		addKeyListener(this);
+		addMouseListener(this);
 		
 		start();
 	}
@@ -118,32 +119,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		gsm.mouseClicked(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		gsm.mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		gsm.mouseReleased(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		gsm.mouseEntered(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		gsm.mouseExited(e);
 	}
 
 }

@@ -2,6 +2,7 @@ package game.client.gsm;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Stack;
 
 public class GameStateManager {
@@ -49,6 +50,26 @@ public class GameStateManager {
 
 	public void keyReleased(KeyEvent e) {
 		states.peek().keyReleased(e.getKeyCode());
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		states.peek().mouseClicked(e);
+	}
+
+	public void mousePressed(MouseEvent e) {
+		states.peek().mousePressed(e);
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		states.peek().mouseReleased(e);
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		states.peek().mouseEntered(e);
+	}
+
+	public void mouseExited(MouseEvent e) {
+		states.peek().mouseExited(e);
 	}
 	
 }
