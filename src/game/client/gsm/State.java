@@ -1,6 +1,7 @@
 package game.client.gsm;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 
 public abstract class State {
 	
@@ -17,5 +18,10 @@ public abstract class State {
 	public abstract void keyTyped(int keyCode);
 	public abstract void keyPressed(int keyCode);
 	public abstract void keyReleased(int keyCode);
+	public abstract void mouseClicked(MouseEvent e);
+	public abstract void mousePressed(MouseEvent e);
+	public abstract void mouseReleased(MouseEvent e);
+	public abstract void mouseEntered(MouseEvent e);
+	public abstract void mouseExited(MouseEvent e);
 	
 }
