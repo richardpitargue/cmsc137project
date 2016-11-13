@@ -9,11 +9,21 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.player.Pudge;
 
 public class GameCreationState extends State {
+	
+	private Pudge pudge;
+	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
 
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
+		pudge = new Pudge(50, 50, 50, 50);
+		try {
+			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -27,21 +37,18 @@ public class GameCreationState extends State {
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
-		BufferedImage connectedPlayersLabel, optionsLabel;
-		
+	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-		try {
-			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
-			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
+			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 			
-			optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
-			g.drawImage(optionsLabel, 400, 0, 150, 30, null);
+			pudge.draw(g);
+//			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
+//			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
+//			
+//			optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
+//			g.drawImage(optionsLabel, 400, 0, 150, 30, null);
 			
-			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		
 	}
 
@@ -61,6 +68,19 @@ public class GameCreationState extends State {
 			gsm.pop();
 		} else if(keyCode == KeyEvent.VK_ENTER) {
 			System.out.println("GAME START");
+		}
+		
+		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+			pudge.move(Pudge.UP);
+		}
+		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
+			pudge.move(Pudge.LEFT);
+		}
+		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
+			pudge.move(Pudge.DOWN);
+		}
+		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
+			pudge.move(Pudge.RIGHT);
 		}
 	}
 
