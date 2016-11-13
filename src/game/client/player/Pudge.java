@@ -27,7 +27,7 @@ public class Pudge {
 	private boolean attacking;
 	
 	private BufferedImage[][] sprite;
-	private BufferedImage hook;
+	private BufferedImage[] hook;
 	
 	public Pudge(int x, int y, int width, int height) {
 		this.x = x;
@@ -40,8 +40,11 @@ public class Pudge {
 		
 		//load image here
 		sprite = new BufferedImage[4][4];
+		hook = new BufferedImage[4];
 		try {
-			hook = ImageIO.read(getClass().getClassLoader().getResourceAsStream("hook.png"));
+			for(int i = 0; i < 4; i++ )
+				hook[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("hook_" + i + ".png"));
+			
 			for(int i = 0;  i < 4; i++)
 				for(int j = 0; j < 4; j++)
 					sprite[i][j] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("sprite_" + i + "_" + j + ".png"));
@@ -57,6 +60,7 @@ public class Pudge {
 			} else {
 				attackX -= 5;
 			}
+			
 			if(maxAttackY-this.y > 0) {
 				attackY += 5;
 			} else {
@@ -72,7 +76,7 @@ public class Pudge {
 	public void draw(Graphics2D g) {
 		g.drawImage(sprite[direction][frame], x, y, width, height, null);
 		if(attacking){
-			g.drawImage(hook, attackX, attackY, width, height, null);
+			g.drawImage(hook[direction], attackX, attackY, width, height, null);
 		}
 	}
 	

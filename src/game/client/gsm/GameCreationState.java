@@ -42,6 +42,7 @@ public class GameCreationState extends State {
 			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 			
 			pudge.draw(g);
+			
 //			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
 //			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
 //			
@@ -91,7 +92,7 @@ public class GameCreationState extends State {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		pudge.attack( e.getX(),  e.getY());
+		pudge.attack(e.getX(), e.getY());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
