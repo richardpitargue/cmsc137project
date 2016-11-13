@@ -18,14 +18,16 @@ public class Server implements Runnable {
 	
 	public DatagramSocket serverSocket = null;
 	public ObjectInputStream inStream = null;
-	public List<Player> players;
+	public ArrayList<Player> players;
 	public List<Lobby> lobbies;
+	public Boolean ingame = false;
+	public int playerCount;
 
 	public Server(int playerCount)
 	{
 		players = new ArrayList<Player>();
 		lobbies = new ArrayList<Lobby>();
-		
+		this.playerCount = playerCount;
 		try {
 			serverSocket = new DatagramSocket(1234);
 		} catch (SocketException e) {
@@ -77,7 +79,7 @@ public class Server implements Runnable {
 //		}
 		while(true) {
 			try {
-				byte buf[] = new byte[256];
+				byte buf[] = new byte[512];
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				serverSocket.receive(packet);
 				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
@@ -100,6 +102,19 @@ public class Server implements Runnable {
 					for(Player p : players) {
 						System.out.println(p.getAddress() + ":" + p.getPort());
 					}
+					
+					if(players.size() == playerCount)
+					{
+						ingame = true;
+						broadcast();
+						continue;
+					}	
+				}
+				
+				if(ingame)
+				{
+					players = (ArrayList<Player>) obj;
+					broadcast();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -113,10 +128,11 @@ public class Server implements Runnable {
 	private void broadcast() {
 		// TODO Auto-generated method stub
 		try{
+			Thread.sleep(20);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(players);
-			
+			oo.close();
 //			System.out.println("test2");
 			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
@@ -131,8 +147,8 @@ public class Server implements Runnable {
 				DatagramPacket packet = new DatagramPacket(buf, buf.length, p.getAddress(), p.getPort());
 	        	serverSocket.send(packet);
 			}
-//			System.out.println("Broadcasted");
-			oo.close();
+			//System.out.println("Broadcasted");
+			
 		}
 		catch(Exception e)
 		{

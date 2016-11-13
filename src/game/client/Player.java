@@ -16,6 +16,8 @@ public class Player implements Serializable
 		this.name = name;
 		this.address = address;
 		this.port = port;
+		this.x = 0;
+		this.y = 0;
 	}
 	
 	public InetAddress getAddress()

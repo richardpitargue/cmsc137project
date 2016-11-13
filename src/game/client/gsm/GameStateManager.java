@@ -3,11 +3,20 @@ package game.client.gsm;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
+
+import game.client.Player;
 
 public class GameStateManager {
 	
 	private Stack<State> states;
+	public ArrayList<Player> players;
+	public String server = new String();
+	public int port;
+	public int serverPort;
+	public Player player;
 	
 	public GameStateManager() {
 		states = new Stack<State>();

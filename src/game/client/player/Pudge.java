@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import game.client.Player;
+
 public class Pudge {
 	
 	public static final int UP = 0;
@@ -20,10 +22,12 @@ public class Pudge {
 	private int frame;
 	private int direction;
 	private BufferedImage[][] sprite;
+	public Player player;
 	
-	public Pudge(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
+	public Pudge(Player player, int width, int height) {
+		this.player = player;
+		this.x = player.getX();
+		this.y = player.getY();
 		this.width = width;
 		this.height = height;
 		this.frame = 0;
@@ -41,7 +45,7 @@ public class Pudge {
 	}
 		
 	public void draw(Graphics2D g) {
-		g.drawImage(sprite[direction][frame], x, y, width, height, null);
+		g.drawImage(sprite[direction][frame], player.getX(), player.getY(), width, height, null);
 	}
 	
 	public void move(int direction) {
@@ -71,6 +75,9 @@ public class Pudge {
 				break;
 		}
 		frame = (frame + 1) % 4;
+		
+		player.setX(x);
+		player.setY(y);
 	}
 	
 }

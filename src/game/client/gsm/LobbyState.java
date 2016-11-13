@@ -58,7 +58,7 @@ public class LobbyState extends State {
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
 		} else if(keyCode == KeyEvent.VK_ENTER) {
-			gsm.changeState(new GameCreationState(gsm), false);
+			//gsm.changeState(new GameCreationState(gsm), false);
 		}
 		
 	}

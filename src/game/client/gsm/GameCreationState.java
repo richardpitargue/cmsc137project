@@ -5,20 +5,28 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.Player;
 import game.client.player.Pudge;
 
 public class GameCreationState extends State {
 	
-	private Pudge pudge;
+	
+	private ArrayList<Pudge> pudges = new ArrayList<Pudge>();
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
 
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
-		pudge = new Pudge(50, 50, 50, 50);
+		
+		for(int i = 0; i <gsm.players.size();i++) {
+			pudges.add(new Pudge(gsm.players.get(i),50,50));
+		}
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
 		} catch (IOException e) {
@@ -40,8 +48,10 @@ public class GameCreationState extends State {
 	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+			for(Pudge p : pudges)
+				p.draw(g);
 			
-			pudge.draw(g);
+			
 //			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
 //			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
 //			
@@ -64,24 +74,37 @@ public class GameCreationState extends State {
 
 	@Override
 	public void keyPressed(int keyCode) {
-		if(keyCode == KeyEvent.VK_ESCAPE) {
-			gsm.pop();
-		} else if(keyCode == KeyEvent.VK_ENTER) {
-			System.out.println("GAME START");
+		System.out.println(keyCode);
+		for(int i = 0; i < pudges.size(); i++)
+		{
+			System.out.println(pudges.get(i).player.toString());
+			System.out.println(gsm.player.toString());
+			if(pudges.get(i).player.getName().compareTo(gsm.player.getName()) == 0)
+			{
+				if(keyCode == KeyEvent.VK_ESCAPE) {
+					gsm.pop();
+				} else if(keyCode == KeyEvent.VK_ENTER) {
+					System.out.println("GAME START");
+				}
+				
+				if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+					pudges.get(i).move(Pudge.UP);
+				}
+				if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
+					pudges.get(i).move(Pudge.LEFT);
+				}
+				if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
+					pudges.get(i).move(Pudge.DOWN);
+				}
+				if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
+					pudges.get(i).move(Pudge.RIGHT);
+				}
+				
+				break;
+			}
+				
 		}
 		
-		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-			pudge.move(Pudge.UP);
-		}
-		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
-			pudge.move(Pudge.LEFT);
-		}
-		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
-			pudge.move(Pudge.DOWN);
-		}
-		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
-			pudge.move(Pudge.RIGHT);
-		}
 	}
 
 	@Override

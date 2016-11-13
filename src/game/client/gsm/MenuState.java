@@ -9,11 +9,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.Player;
 
 public class MenuState extends State {
+
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
+		
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class MenuState extends State {
 	@Override
 	public void keyPressed(int keyCode) {
 		if(keyCode == KeyEvent.VK_ENTER) {
-			gsm.changeState(new LobbyState(gsm), false);
+			gsm.changeState(new GameCreationState(gsm), false);
 		}
 	}
 
