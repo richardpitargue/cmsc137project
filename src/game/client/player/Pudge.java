@@ -41,7 +41,6 @@ public class Pudge {
 	}
 		
 	public void draw(Graphics2D g) {
-		System.out.println(direction);
 		g.drawImage(sprite[direction][frame], x, y, width, height, null);
 	}
 	
