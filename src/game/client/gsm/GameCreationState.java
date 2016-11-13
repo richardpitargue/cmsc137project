@@ -9,9 +9,9 @@ import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
 
-public class LobbyState extends State {
+public class GameCreationState extends State {
 
-	public LobbyState(GameStateManager gsm) {
+	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
 	}
 
@@ -22,23 +22,26 @@ public class LobbyState extends State {
 
 	@Override
 	public void update(double delta) {
-		// get available lobbies from server
+		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		// list all available lobbies on GUI
-		BufferedImage lobbyLabel;
+		BufferedImage connectedPlayersLabel, optionsLabel;
 		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		try {
-			lobbyLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("lobby.png"));
-			g.drawImage(lobbyLabel, 220, 0, 170, 30, null);
+			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
+			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
+			
+			optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
+			g.drawImage(optionsLabel, 400, 0, 150, 30, null);
 			
 			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	@Override
@@ -56,7 +59,7 @@ public class LobbyState extends State {
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
 		} else if(keyCode == KeyEvent.VK_ENTER) {
-			gsm.changeState(new GameCreationState(gsm), false);
+			System.out.println("GAME START");
 		}
 	}
 
@@ -64,5 +67,6 @@ public class LobbyState extends State {
 	public void keyReleased(int keyCode) {
 		
 	}
-
+	
+	
 }

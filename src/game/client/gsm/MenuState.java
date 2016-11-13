@@ -27,15 +27,21 @@ public class MenuState extends State {
 
 	@Override
 	public void draw(Graphics2D g) {
-		BufferedImage img;
+		BufferedImage img, logo, logo2;
 		try {
 			img = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
 			g.drawImage(img, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+			
+			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
+			g.drawImage(logo, 55, 5, 500, 50, null);
+			
+			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
+			g.drawImage(logo2, 105, 55, 400, 25, null);
+			
+			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// g.drawString("PRESS [ENTER] TO CONTINUE", 50, 50);
 		
 	}
 
