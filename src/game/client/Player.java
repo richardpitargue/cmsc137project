@@ -64,4 +64,24 @@ public class Player implements Serializable
 		return(name + " "+ x + " " + y + " " + address + " " + port);
 	}
 	
+	public boolean equals(Object player) {
+		if(player == null) {
+			return false;
+		}
+		
+		if(!(player instanceof Player)) {
+			return false;
+		}
+		
+		Player p2 = (Player) player;
+		
+		if(p2.address != address) {
+			return false;
+		} else if(p2.port != port) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 }
