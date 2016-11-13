@@ -73,10 +73,10 @@ public class Client implements Runnable {
 					byte buf[] = new byte[512];
 					DatagramPacket packet = new DatagramPacket(buf, buf.length);
 					serverSocket.receive(packet);
-					System.out.println("Update!");
+//					System.out.println("Update!");
 					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
 					players = (Player[]) iStream.readObject();
-					System.out.println(players.length);
+//					System.out.println(players.length);
 					
 					ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 					ObjectOutput oo = new ObjectOutputStream(bStream); 

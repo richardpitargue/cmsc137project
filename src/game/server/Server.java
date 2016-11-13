@@ -78,17 +78,17 @@ public class Server implements Runnable {
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(players);
 			
-			System.out.println("test2");
+//			System.out.println("test2");
 			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
 			for(int i = 0; i < currentPlayers; i++)
 			{		
 	        	DatagramPacket packet = new DatagramPacket(buf, buf.length, players[i].getAddress(), players[i].getPort());
 	        	serverSocket.send(packet);
-	        	System.out.println("sent2");   
+//	        	System.out.println("sent2");   
 	        	
 			}
-			System.out.println("Broadcasted");
+//			System.out.println("Broadcasted");
 			oo.close();
 		}
 		catch(Exception e)
@@ -96,6 +96,11 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server(2);
+		server.run();
 	}
 
 }

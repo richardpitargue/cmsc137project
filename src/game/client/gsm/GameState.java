@@ -1,54 +1,53 @@
 package game.client.gsm;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 
-import game.client.Game;
-import game.client.GamePanel;
+public class GameState extends State {
 
-public class LobbyState extends State {
-
-	public LobbyState(GameStateManager gsm) {
+	public GameState(GameStateManager gsm) {
 		super(gsm);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onEnter() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void update(double delta) {
-		// get available lobbies from server
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		// list all available lobbies on gui
-		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-		g.drawString("Welcome to the Lobby", 50, 10);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onExit() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(int keyCode) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyPressed(int keyCode) {
-		if(keyCode == KeyEvent.VK_ESCAPE) {
-			gsm.pop();
-		}
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyReleased(int keyCode) {
+		// TODO Auto-generated method stub
 		
 	}
 
