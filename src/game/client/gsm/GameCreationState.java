@@ -18,14 +18,13 @@ import game.client.player.Pudge;
 public class GameCreationState extends State {
 	
 	
-	private ArrayList<Pudge> pudges = new ArrayList<Pudge>();
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
 
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
 		
 		for(int i = 0; i <gsm.players.size();i++) {
-			pudges.add(new Pudge(gsm.players.get(i),50,50));
+			gsm.pudges.add(new Pudge(gsm.players.get(i),50,50));
 		}
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
@@ -41,14 +40,13 @@ public class GameCreationState extends State {
 
 	@Override
 	public void update(double delta) {
-		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-			for(Pudge p : pudges)
+			for(Pudge p : gsm.pudges)
 				p.draw(g);
 			
 			
@@ -75,11 +73,11 @@ public class GameCreationState extends State {
 	@Override
 	public void keyPressed(int keyCode) {
 		System.out.println(keyCode);
-		for(int i = 0; i < pudges.size(); i++)
+		for(int i = 0; i < gsm.pudges.size(); i++)
 		{
-			System.out.println(pudges.get(i).player.toString());
+			System.out.println(gsm.pudges.get(i).player.toString());
 			System.out.println(gsm.player.toString());
-			if(pudges.get(i).player.getName().compareTo(gsm.player.getName()) == 0)
+			if(gsm.pudges.get(i).player.getName().compareTo(gsm.player.getName()) == 0)
 			{
 				if(keyCode == KeyEvent.VK_ESCAPE) {
 					gsm.pop();
@@ -88,18 +86,18 @@ public class GameCreationState extends State {
 				}
 				
 				if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-					pudges.get(i).move(Pudge.UP);
+					gsm.pudges.get(i).move(Pudge.UP, gsm.player);
 				}
 				if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
-					pudges.get(i).move(Pudge.LEFT);
+					gsm.pudges.get(i).move(Pudge.LEFT, gsm.player);
 				}
 				if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
-					pudges.get(i).move(Pudge.DOWN);
+					gsm.pudges.get(i).move(Pudge.DOWN, gsm.player);
 				}
 				if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
-					pudges.get(i).move(Pudge.RIGHT);
+					gsm.pudges.get(i).move(Pudge.RIGHT, gsm.player);
 				}
-				
+				System.out.println(gsm.pudges.get(i).player.getName());
 				break;
 			}
 				

@@ -80,8 +80,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread.start();
 		
 		// instantiate this player
-		player = new Player("matigas2", null, port);
-		gsm.player = player;
+		gsm.player = new Player("matigas", null, port);
 		// try to connect to the server
 		connect();
 	}
@@ -95,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				ObjectOutput oo = new ObjectOutputStream(bStream); 
 				oo.writeObject(gsm.player);
 				oo.close();
-				byte[] buf = new byte[256]; 
+				byte[] buf = new byte[512]; 
 				buf = bStream.toByteArray();
 				InetAddress address = InetAddress.getByName(server);
 				
@@ -119,12 +118,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	{
 		try
 		{
-			byte buf[] = new byte[512];
+			byte buf[] = new byte[400];
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			serverSocket.receive(packet);
 			ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
 			
-			gsm.players = (ArrayList<Player>) iStream.readObject();
+			if(gsm.players == null)
+				gsm.players = (ArrayList<Player>) iStream.readObject();
+			else
+			{
+				ArrayList<Player> received = (ArrayList<Player>) iStream.readObject();
+				for(int i = 0; i < gsm.players.size(); i++)
+				{
+					System.out.println(gsm.players.get(i).getName() + " " + gsm.players.get(i).getX() + " " + gsm.players.get(i).getY());
+					if(gsm.players.get(i).getName().compareTo(gsm.player.getName()) == 0)
+						continue;
+					gsm.players.get(i).setX(received.get(i).getX());
+					gsm.players.get(i).setY(received.get(i).getY());
+					gsm.pudges.get(i).setX(received.get(i).getX());
+					gsm.pudges.get(i).setY(received.get(i).getY());
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -136,18 +150,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	{
 		try
 		{	
-			for(int i = 0; i < gsm.players.size(); i++)
-			{
-				if(gsm.players.get(i).getName().compareTo(gsm.player.getName()) == 0)
-				{
-					gsm.players.get(i).setX(gsm.player.getX()); 
-					gsm.players.get(i).setY(gsm.player.getY()); 
-					break;
-				}
-			}	
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
-			oo.writeObject(gsm.players);
+			oo.writeObject(gsm.player);
 			oo.close();
 			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
@@ -155,6 +160,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, serverPort);
 			serverSocket.send(packet);
+				
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -184,6 +192,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			}
 			
 			update(delta);
+			if(connected)
+			{
+				receive();
+				send();
+			}
 			draw();
 			render();
 			fps++;
@@ -198,15 +211,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	public void update(double delta) {
 		gsm.update(delta);
-		try
-		{
-			Thread.sleep(20);
-		}catch(Exception e){}
-		if(connected)
-		{
-			receive();
-			send();
-		}
+		
 	}
 	
 	public void draw() {

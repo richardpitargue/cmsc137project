@@ -47,11 +47,17 @@ public class Pudge {
 	public void draw(Graphics2D g) {
 		g.drawImage(sprite[direction][frame], player.getX(), player.getY(), width, height, null);
 	}
+	public void setX(int x)
+	{
+		this.x = x;
+	}
+	public void setY(int y)
+	{
+		this.y = y;
+	}
 	
-	public void move(int direction) {
-		
-		
-		
+	public void move(int direction, Player gsm) {
+
 		switch(direction) {
 			case UP:
 				this.direction = 0;
@@ -75,9 +81,10 @@ public class Pudge {
 				break;
 		}
 		frame = (frame + 1) % 4;
-		
-		player.setX(x);
-		player.setY(y);
+		gsm.setX(x);
+		gsm.setY(y);
+		this.player.setX(this.x);
+		this.player.setY(this.y);
 	}
 	
 }

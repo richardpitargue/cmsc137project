@@ -92,7 +92,7 @@ public class Server implements Runnable {
 					lobbies.add(lobby);
 				}
 				
-				if(obj instanceof Player) {
+				if(obj instanceof Player && !ingame) {
 					Player player = (Player) obj;
 					System.out.println("Object received = " + player.toString());
 					player.changeAddress(packet.getAddress());
@@ -100,7 +100,7 @@ public class Server implements Runnable {
 					
 					System.out.println("Current players connected: ");
 					for(Player p : players) {
-						System.out.println(p.getAddress() + ":" + p.getPort());
+						System.out.println(p.getAddress() + ":" + p.getPort() + ":" + p.getName());
 					}
 					
 					if(players.size() == playerCount)
@@ -113,7 +113,15 @@ public class Server implements Runnable {
 				
 				if(ingame)
 				{
-					players = (ArrayList<Player>) obj;
+					Player player = (Player) obj;
+					for(int i = 0; i < players.size(); i++)
+					{
+						if(players.get(i).getName().compareTo(player.getName() ) == 0)
+						{
+							players.get(i).setX(player.getX());
+							players.get(i).setY(player.getY());
+						}
+					}
 					broadcast();
 				}
 			} catch (IOException e) {
@@ -128,13 +136,12 @@ public class Server implements Runnable {
 	private void broadcast() {
 		// TODO Auto-generated method stub
 		try{
-			Thread.sleep(20);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(players);
 			oo.close();
 //			System.out.println("test2");
-			byte[] buf = new byte[512]; 
+			byte[] buf = new byte[400]; 
 			buf = bStream.toByteArray();
 //			for(int i = 0; i < currentPlayers; i++)
 //			{		
@@ -145,6 +152,7 @@ public class Server implements Runnable {
 //			}
 			for(Player p : players) {
 				DatagramPacket packet = new DatagramPacket(buf, buf.length, p.getAddress(), p.getPort());
+				System.out.println(p.getName() + " " + p.getX() + " " + p.getY());
 	        	serverSocket.send(packet);
 			}
 			//System.out.println("Broadcasted");

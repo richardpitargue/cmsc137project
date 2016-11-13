@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Stack;
 
 import game.client.Player;
+import game.client.player.Pudge;
 
 public class GameStateManager {
 	
@@ -17,6 +18,7 @@ public class GameStateManager {
 	public int port;
 	public int serverPort;
 	public Player player;
+	public ArrayList<Pudge> pudges = new ArrayList<Pudge>();
 	
 	public GameStateManager() {
 		states = new Stack<State>();
