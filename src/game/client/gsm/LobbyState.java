@@ -2,6 +2,11 @@ package game.client.gsm;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import game.client.Game;
 import game.client.GamePanel;
@@ -24,9 +29,18 @@ public class LobbyState extends State {
 
 	@Override
 	public void draw(Graphics2D g) {
-		// list all available lobbies on gui
+		// list all available lobbies on GUI
+		BufferedImage lobbyLabel;
+		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-		g.drawString("Welcome to the Lobby", 50, 10);
+		try {
+			lobbyLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("lobby.png"));
+			g.drawImage(lobbyLabel, 220, 0, 170, 30, null);
+			
+			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -43,12 +57,44 @@ public class LobbyState extends State {
 	public void keyPressed(int keyCode) {
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
+		} else if(keyCode == KeyEvent.VK_ENTER) {
+			gsm.changeState(new GameCreationState(gsm), false);
 		}
 		
 	}
 
 	@Override
 	public void keyReleased(int keyCode) {
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
