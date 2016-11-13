@@ -19,7 +19,15 @@ public class Pudge {
 	private int height;
 	private int frame;
 	private int direction;
+	
+	private int attackX;
+	private int attackY;
+	private int maxAttackX;
+	private int maxAttackY;
+	private boolean attacking;
+	
 	private BufferedImage[][] sprite;
+	private BufferedImage hook;
 	
 	public Pudge(int x, int y, int width, int height) {
 		this.x = x;
@@ -28,10 +36,12 @@ public class Pudge {
 		this.height = height;
 		this.frame = 0;
 		this.direction = 0;
+		this.attacking = false;
 		
 		//load image here
 		sprite = new BufferedImage[4][4];
 		try {
+			hook = ImageIO.read(getClass().getClassLoader().getResourceAsStream("hook.png"));
 			for(int i = 0;  i < 4; i++)
 				for(int j = 0; j < 4; j++)
 					sprite[i][j] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("sprite_" + i + "_" + j + ".png"));
@@ -39,14 +49,34 @@ public class Pudge {
 			e.printStackTrace();
 		}
 	}
+	
+	public void update() {
+		if(attacking) {
+			if(maxAttackX-this.x > 0) {
+				attackX += 5;
+			} else {
+				attackX -= 5;
+			}
+			if(maxAttackY-this.y > 0) {
+				attackY += 5;
+			} else {
+				attackY -= 5;
+			}
+			
+			if(attackX >= maxAttackX && attackY >= maxAttackY) {
+				attacking = false;
+			}
+		}
+	}
 		
 	public void draw(Graphics2D g) {
 		g.drawImage(sprite[direction][frame], x, y, width, height, null);
+		if(attacking){
+			g.drawImage(hook, attackX, attackY, width, height, null);
+		}
 	}
 	
 	public void move(int direction) {
-		
-		
 		
 		switch(direction) {
 			case UP:
@@ -70,6 +100,18 @@ public class Pudge {
 					x += 5;
 				break;
 		}
+		frame = (frame + 1) % 4;
+	}
+	
+	public void attack(int x, int y) {
+		attacking = true;
+		maxAttackX = (x/2);
+		maxAttackY = (y/2);
+		attackX = this.x;
+		attackY = this.y;
+		
+		System.out.println("Click position (X, Y):  " + maxAttackX + ", " + maxAttackY);
+		
 		frame = (frame + 1) % 4;
 	}
 	

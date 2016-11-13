@@ -33,7 +33,7 @@ public class GameCreationState extends State {
 
 	@Override
 	public void update(double delta) {
-		
+		pudge.update();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class GameCreationState extends State {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Click position (X, Y):  " + e.getX() + ", " + e.getY());
+		pudge.attack( e.getX(),  e.getY());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
