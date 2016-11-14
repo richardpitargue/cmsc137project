@@ -82,26 +82,25 @@ public class Server implements Runnable {
 				byte buf[] = new byte[512];
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				serverSocket.receive(packet);
+				
 				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
 				
 				Object obj = iStream.readObject();
 				
 				if(obj instanceof Lobby) {
 					Lobby lobby = (Lobby) obj;
-					System.out.println("Object received = " + lobby.toString());
+					//System.out.println("Object received = " + lobby.toString());
 					lobbies.add(lobby);
 				}
 				
 				if(obj instanceof Player && !ingame) {
 					Player player = (Player) obj;
-					System.out.println("Object received = " + player.toString());
+					//System.out.println("Object received = " + player.toString());
 					player.changeAddress(packet.getAddress());
 					players.add(player);
 					
-					System.out.println("Current players connected: ");
-					for(Player p : players) {
-						System.out.println(p.getAddress() + ":" + p.getPort() + ":" + p.getName());
-					}
+					//System.out.println("Current players connected: ");
+					
 					
 					if(players.size() == playerCount)
 					{
@@ -114,12 +113,12 @@ public class Server implements Runnable {
 				if(ingame)
 				{
 					Player player = (Player) obj;
-					for(int i = 0; i < players.size(); i++)
+					
+					for(Player p: players)
 					{
-						if(players.get(i).getName().compareTo(player.getName() ) == 0)
+						if(p.equals(player))
 						{
-							players.get(i).setX(player.getX());
-							players.get(i).setY(player.getY());
+							p.setPlayer(player);
 						}
 					}
 					broadcast();
@@ -141,7 +140,7 @@ public class Server implements Runnable {
 			oo.writeObject(players);
 			oo.close();
 //			System.out.println("test2");
-			byte[] buf = new byte[400]; 
+			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
 //			for(int i = 0; i < currentPlayers; i++)
 //			{		
@@ -156,7 +155,6 @@ public class Server implements Runnable {
 	        	serverSocket.send(packet);
 			}
 			//System.out.println("Broadcasted");
-			
 		}
 		catch(Exception e)
 		{

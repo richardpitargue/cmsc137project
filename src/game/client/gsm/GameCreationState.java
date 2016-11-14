@@ -22,15 +22,6 @@ public class GameCreationState extends State {
 
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
-		
-		for(int i = 0; i <gsm.players.size();i++) {
-			gsm.pudges.add(new Pudge(gsm.players.get(i),50,50));
-		}
-		try {
-			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -46,7 +37,7 @@ public class GameCreationState extends State {
 	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-			for(Pudge p : gsm.pudges)
+			for(Player p : gsm.players)
 				p.draw(g);
 			
 			
@@ -72,36 +63,28 @@ public class GameCreationState extends State {
 
 	@Override
 	public void keyPressed(int keyCode) {
-		System.out.println(keyCode);
-		for(int i = 0; i < gsm.pudges.size(); i++)
-		{
-			System.out.println(gsm.pudges.get(i).player.toString());
-			System.out.println(gsm.player.toString());
-			if(gsm.pudges.get(i).player.getName().compareTo(gsm.player.getName()) == 0)
-			{
-				if(keyCode == KeyEvent.VK_ESCAPE) {
-					gsm.pop();
-				} else if(keyCode == KeyEvent.VK_ENTER) {
-					System.out.println("GAME START");
-				}
-				
-				if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-					gsm.pudges.get(i).move(Pudge.UP, gsm.player);
-				}
-				if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
-					gsm.pudges.get(i).move(Pudge.LEFT, gsm.player);
-				}
-				if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
-					gsm.pudges.get(i).move(Pudge.DOWN, gsm.player);
-				}
-				if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
-					gsm.pudges.get(i).move(Pudge.RIGHT, gsm.player);
-				}
-				System.out.println(gsm.pudges.get(i).player.getName());
-				break;
-			}
-				
+		//System.out.println(keyCode);
+		if(keyCode == KeyEvent.VK_ESCAPE) {
+			gsm.pop();
+		} else if(keyCode == KeyEvent.VK_ENTER) {
+			//System.out.println("GAME START");
 		}
+		System.out.println(gsm.player.getName() +" " + keyCode);
+
+		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+			gsm.player.move(0);
+		}
+		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
+			gsm.player.move(2);
+		}
+		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
+			gsm.player.move(1);
+		}
+		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
+			gsm.player.move(3);
+		}
+		//System.out.println(gsm.pudges.get(i).player.getName());
+		
 		
 	}
 
@@ -112,7 +95,7 @@ public class GameCreationState extends State {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Click position (X, Y):  " + e.getX() + ", " + e.getY());
+		//System.out.println("Click position (X, Y):  " + e.getX() + ", " + e.getY());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {

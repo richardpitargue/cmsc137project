@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread.start();
 		
 		// instantiate this player
-		gsm.player = new Player("matigas", null, port);
+		gsm.player = new Player("benny", null, port);
 		// try to connect to the server
 		connect();
 	}
@@ -102,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				serverSocket.send(packet);
 				
 				connected = true;
-				System.out.println("connected = true");
+				//System.out.println("connected = true");
 			} catch(SocketException e) { 
 				System.err.println("Socket exception!");
 			} catch(UnknownHostException e) {
@@ -118,41 +118,29 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	{
 		try
 		{
-			byte buf[] = new byte[400];
+			byte buf[] = new byte[512];
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			serverSocket.receive(packet);
 			ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
 			
-			if(gsm.players == null)
-				gsm.players = (ArrayList<Player>) iStream.readObject();
-			else
-			{
-				ArrayList<Player> received = (ArrayList<Player>) iStream.readObject();
-				for(int i = 0; i < gsm.players.size(); i++)
-				{
-					System.out.println(gsm.players.get(i).getName() + " " + gsm.players.get(i).getX() + " " + gsm.players.get(i).getY());
-					if(gsm.players.get(i).getName().compareTo(gsm.player.getName()) == 0)
-						continue;
-					gsm.players.get(i).setX(received.get(i).getX());
-					gsm.players.get(i).setY(received.get(i).getY());
-					gsm.pudges.get(i).setX(received.get(i).getX());
-					gsm.pudges.get(i).setY(received.get(i).getY());
-				}
-			}
+
+			gsm.players = (ArrayList<Player>) iStream.readObject();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		System.out.println("Received");
+		//System.out.println("Received");
 	}
 	public void send()
 	{
+		
 		try
 		{	
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(gsm.player);
+			System.out.println(gsm.player.getName() + " " + gsm.player.getX() + " " + gsm.player.getY());
 			oo.close();
 			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
@@ -160,7 +148,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, serverPort);
 			serverSocket.send(packet);
-				
+			//gsm.player.setChanged(false);
 			
 			
 		}
@@ -168,7 +156,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		{
 			e.printStackTrace();
 		}
-		System.out.println("Sent");
+		//System.out.println("Sent");
 	}
 	@Override
 	public void run() {

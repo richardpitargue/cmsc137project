@@ -120,7 +120,7 @@ public class Game{
 		JFrame frame = new JFrame("Call of Pudge: Modern Hookfare");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.add(new GamePanel("127.0.0.1", 1232, 1234));
+		frame.add(new GamePanel("127.0.0.1", 1233, 1234));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

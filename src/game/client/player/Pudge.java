@@ -56,35 +56,31 @@ public class Pudge {
 		this.y = y;
 	}
 	
-	public void move(int direction, Player gsm) {
+	public void move(int direction) {
 
 		switch(direction) {
 			case UP:
 				this.direction = 0;
 				if(y!=0)
-					y -= 5;
+					this.player.setY(y-5);
 				break;
 			case DOWN:
 				this.direction = 2;
 				if(y!=275)
-					y += 5;
+					this.player.setY(y+5);
 				break;
 			case LEFT:
 				this.direction = 3;
 				if(x != 0 && x != 340)
-					x -= 5;
+					this.player.setX(x-5);
 				break;
 			case RIGHT:
 				this.direction = 1;
 				if(x != 550 && x != 210)
-					x += 5;
+					this.player.setX(x+5);
 				break;
 		}
 		frame = (frame + 1) % 4;
-		gsm.setX(x);
-		gsm.setY(y);
-		this.player.setX(this.x);
-		this.player.setY(this.y);
 	}
 	
 }
