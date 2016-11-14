@@ -19,9 +19,15 @@ public class GameCreationState extends State {
 	
 	
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
-
+	
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
+		
+		try {
+			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -36,18 +42,18 @@ public class GameCreationState extends State {
 	@Override
 	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-			g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-			for(Player p : gsm.players)
-				p.draw(g);
+		g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+		for(Player p : gsm.players)
+			p.draw(g);
 			
 			
-//			connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
-//			g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
+//		connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
+//		g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
 //			
-//			optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
-//			g.drawImage(optionsLabel, 400, 0, 150, 30, null);
-			
-//			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
+//		optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
+//		g.drawImage(optionsLabel, 400, 0, 150, 30, null);
+
+//		g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		
 	}
 
@@ -85,33 +91,33 @@ public class GameCreationState extends State {
 		}
 		//System.out.println(gsm.pudges.get(i).player.getName());
 		
-		
 	}
 
 	@Override
 	public void keyReleased(int keyCode) {
 		
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//System.out.println("Click position (X, Y):  " + e.getX() + ", " + e.getY());
+		
 	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		
 	}
-
+	
 	@Override
 	public void mouseExited(MouseEvent e) {
 		
