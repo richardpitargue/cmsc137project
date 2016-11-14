@@ -8,7 +8,12 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +21,14 @@ import game.client.Player;
 
 public class Server implements Runnable {
 	
-	public DatagramSocket serverSocket = null;
 	public ObjectInputStream inStream = null;
 	public ArrayList<Player> players;
 	public List<Lobby> lobbies;
 	public Boolean ingame = false;
 	public int playerCount;
+	private DatagramChannel channel;
+	private static final int memorySize = 8192;
+	private static final int serverPort = 1234;
 
 	public Server(int playerCount)
 	{
@@ -29,78 +36,48 @@ public class Server implements Runnable {
 		lobbies = new ArrayList<Lobby>();
 		this.playerCount = playerCount;
 		try {
-			serverSocket = new DatagramSocket(1234);
-		} catch (SocketException e) {
+			channel = DatagramChannel.open();
+			channel.socket().bind(new InetSocketAddress(serverPort));
+			channel.configureBlocking(false);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-//		try {
-//			serverSocket = new DatagramSocket(1234);
-//			while(currentPlayers < playerCount)
-//			{
-//				System.out.println("Waiting");
-//				
-//				byte buf[] = new byte[256];
-//				DatagramPacket packet = new DatagramPacket(buf, buf.length);
-//				serverSocket.receive(packet);
-//				System.out.println("Connected");
-//				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
-//				Player player = (Player) iStream.readObject();
-//				System.out.println("Object received = " + player.toString());
-//				players[currentPlayers] = player;
-//				players[currentPlayers].changeAddress(packet.getAddress());
-//				currentPlayers++;
-//				
-//			}
-//			System.out.println("Players Connected");
-//		
-//			System.out.println("Game Start");
-//			while(true)
-//			{
-//				try{
-//				}catch(Exception e){}
-//				broadcast();
-//				byte buf[] = new byte[512];
-//				DatagramPacket packet = new DatagramPacket(buf, buf.length);
-//				serverSocket.receive(packet);
-//				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
-//				players = (Player[]) iStream.readObject();
-//				
-//				
-//			}
-//		
-//		
-//		} catch (IOException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		while(true) {
 			try {
-				byte buf[] = new byte[512];
-				DatagramPacket packet = new DatagramPacket(buf, buf.length);
-				serverSocket.receive(packet);
+				ByteBuffer buf = ByteBuffer.allocate(memorySize);
 				
-				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
+				SocketAddress senderAddress = channel.receive(buf);
+				if(senderAddress == null)
+					continue;
+				buf.clear();
+				byte[] byt = new byte[buf.capacity()];
+				buf.get(byt, 0, byt.length);
+				
+				
+				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(byt));
 				
 				Object obj = iStream.readObject();
 				
 				if(obj instanceof Lobby) {
 					Lobby lobby = (Lobby) obj;
-					//System.out.println("Object received = " + lobby.toString());
 					lobbies.add(lobby);
 				}
 				
 				if(obj instanceof Player && !ingame) {
 					Player player = (Player) obj;
-					//System.out.println("Object received = " + player.toString());
-					player.changeAddress(packet.getAddress());
+					if(players.contains(player))
+						continue;
+					for(Player p: players)
+					{
+						System.out.println(p.equals(player));
+						if(p.equals(player))
+							continue;
+					}
+					player.changeAddress(senderAddress);
 					players.add(player);
-					
-					//System.out.println("Current players connected: ");
-					
 					
 					if(players.size() == playerCount)
 					{
@@ -139,20 +116,12 @@ public class Server implements Runnable {
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(players);
 			oo.close();
-//			System.out.println("test2");
 			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
-//			for(int i = 0; i < currentPlayers; i++)
-//			{		
-//	        	DatagramPacket packet = new DatagramPacket(buf, buf.length, players[i].getAddress(), players[i].getPort());
-//	        	serverSocket.send(packet);
-////	        	System.out.println("sent2");   
-//	        	
-//			}
+	
 			for(Player p : players) {
-				DatagramPacket packet = new DatagramPacket(buf, buf.length, p.getAddress(), p.getPort());
 				System.out.println(p.getName() + " " + p.getX() + " " + p.getY());
-	        	serverSocket.send(packet);
+				channel.send(ByteBuffer.wrap(buf), p.getAddress());
 			}
 			//System.out.println("Broadcasted");
 		}

@@ -17,8 +17,12 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
+	private static final int packetSize = 8192;
 	
 	private Thread gameThread;
 	private boolean running = false;
@@ -44,13 +49,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private GameStateManager gsm;
 	
 	// network shit
-	private DatagramSocket serverSocket;
+	private DatagramSocket socket;
 	private boolean connected = false;
 	
 	private String server;
 	private int port;
 	private int serverPort;
 	private Player player;
+	private SocketAddress address;
+	private DatagramChannel channel;
+	private InetSocketAddress serverAddress;
 	
 	public GamePanel(String server, int port, int serverPort) {
 		super();
@@ -68,6 +76,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		this.server = server;
 		this.port = port;
 		this.serverPort = serverPort;
+		try
+		{
+			channel = DatagramChannel.open();
+			channel.socket().bind(new InetSocketAddress(0));
+			channel.configureBlocking(false);
+			serverAddress = new InetSocketAddress(server,serverPort);
+		}catch(Exception e){}
+		
 		
 		setFocusable(true);
 		requestFocus();
@@ -80,37 +96,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread.start();
 		
 		// instantiate this player
-		gsm.player = new Player("benny", null, port);
+		gsm.player = new Player("benny2", null, port);
 		// try to connect to the server
 		connect();
 	}
 	
 	private void connect() {
 		while(!connected) {
-			try {
-				serverSocket = new DatagramSocket(port);
-				
-				ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-				ObjectOutput oo = new ObjectOutputStream(bStream); 
-				oo.writeObject(gsm.player);
-				oo.close();
-				byte[] buf = new byte[512]; 
-				buf = bStream.toByteArray();
-				InetAddress address = InetAddress.getByName(server);
-				
-				DatagramPacket packet = new DatagramPacket(buf, buf.length, address, serverPort);
-				serverSocket.send(packet);
-				
-				connected = true;
-				//System.out.println("connected = true");
-			} catch(SocketException e) { 
-				System.err.println("Socket exception!");
-			} catch(UnknownHostException e) {
-				System.err.println("Server not found.");
-			} catch(IOException e) {
-				System.err.println("Something went wrong!");
-				e.printStackTrace();
-			}
+			send();
+			connected = true;
+		
 		}
 		
 	}
@@ -118,13 +113,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	{
 		try
 		{
-			byte buf[] = new byte[512];
-			DatagramPacket packet = new DatagramPacket(buf, buf.length);
-			serverSocket.receive(packet);
-			ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
+			ByteBuffer buf = ByteBuffer.allocate(packetSize);
 			
-
-			gsm.players = (ArrayList<Player>) iStream.readObject();
+			if(channel.receive(buf) != null)
+			{
+				buf.clear();
+				byte[] byt = new byte[buf.capacity()];
+				buf.get(byt, 0, byt.length);
+				
+				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(byt));
+				gsm.players = (ArrayList<Player>) iStream.readObject();
+			}
+			
 		}
 		catch(Exception e)
 		{
@@ -134,27 +134,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	}
 	public void send()
 	{
-		
+		if(gsm.player.getChanged())
+		{
 		try
 		{	
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(gsm.player);
-			System.out.println(gsm.player.getName() + " " + gsm.player.getX() + " " + gsm.player.getY());
 			oo.close();
-			byte[] buf = new byte[512]; 
+			byte[] buf = new byte[packetSize]; 
 			buf = bStream.toByteArray();
-			InetAddress address = InetAddress.getByName(server);
-			
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, serverPort);
-			serverSocket.send(packet);
-			//gsm.player.setChanged(false);
-			
-			
+			channel.send(ByteBuffer.wrap(buf), serverAddress);
+			gsm.player.setChanged(false);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		}
 		}
 		//System.out.println("Sent");
 	}

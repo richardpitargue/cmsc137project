@@ -1,5 +1,6 @@
 package game.client;
 import java.net.InetAddress;
+import java.net.SocketAddress;
 
 import javax.imageio.ImageIO;
 
@@ -10,7 +11,7 @@ import java.io.Serializable;
 public class Player implements Serializable
 {
 	private static final long serialVersionUID = 45648976546542154L;
-	private InetAddress address;
+	private SocketAddress address;
 	private int port;
 	private String name;
 	private int x,y;
@@ -20,7 +21,7 @@ public class Player implements Serializable
 	private int direction;
 	private boolean changed;
 	
-	public Player(String name, InetAddress address, int port)
+	public Player(String name, SocketAddress address, int port)
 	{
 		this.name = name;
 		this.address = address;
@@ -48,7 +49,7 @@ public class Player implements Serializable
 	{
 		return changed;
 	}
-	public InetAddress getAddress()
+	public SocketAddress getAddress()
 	{
 		return this.address;
 	}
@@ -94,7 +95,7 @@ public class Player implements Serializable
 		this.y = y;
 	}
 	
-	public void changeAddress(InetAddress address)
+	public void changeAddress(SocketAddress address)
 	{
 		this.address = address;
 	}
@@ -117,10 +118,6 @@ public class Player implements Serializable
 		if(!(player instanceof Player)) {
 			return false;
 		}
-		
-		
-		
-		
 		
 		if(p2.address != address) {
 			return false;
