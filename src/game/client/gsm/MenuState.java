@@ -9,7 +9,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
-import game.client.Player;
 
 public class MenuState extends State {
 

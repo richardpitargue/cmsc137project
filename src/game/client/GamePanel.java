@@ -10,22 +10,13 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JPanel;
 
 import game.client.gsm.GameStateManager;
@@ -49,18 +40,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private GameStateManager gsm;
 	
 	// network shit
-	private DatagramSocket socket;
 	private boolean connected = false;
-	
-	private String server;
-	private int port;
-	private int serverPort;
-	private Player player;
-	private SocketAddress address;
 	private DatagramChannel channel;
 	private InetSocketAddress serverAddress;
 	
-	public GamePanel(String server, int port, int serverPort) {
+	public GamePanel(String server, int serverPort) {
 		super();
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		
@@ -73,9 +57,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		addKeyListener(this);
 		addMouseListener(this);
 		
-		this.server = server;
-		this.port = port;
-		this.serverPort = serverPort;
 		try
 		{
 			channel = DatagramChannel.open();
@@ -95,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread = new Thread(this);
 		gameThread.start();
 		
-		gsm.player = new Player("benny3", null);
+		gsm.player = new Player("benny2", null);
 
 		connect();
 	}

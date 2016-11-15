@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import game.client.Game;
 import game.client.GamePanel;
 
 public class LobbyState extends State {

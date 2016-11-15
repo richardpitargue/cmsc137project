@@ -1,12 +1,8 @@
 package game.client;
-import java.net.InetAddress;
 import java.net.SocketAddress;
-
-import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.Serializable;
 
 public class Player implements Serializable
