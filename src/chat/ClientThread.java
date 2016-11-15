@@ -44,7 +44,7 @@ public class ClientThread extends Thread{
 				for(Socket s:clientSockets){
 
 						out = new PrintWriter(s.getOutputStream());
-						out.println(clientNames.get(clientSockets.indexOf(s)) + ":" + msg);
+						out.println(msg);
 						out.flush(); // flush() so that the message gets sent through the network immediately
 						System.out.println("Broadcasted! " + msg + " to: " + s.toString());
 					

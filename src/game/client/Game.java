@@ -11,7 +11,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import chat.ChatArea;
-import chat.ChatBox;
 
 
 
@@ -26,9 +25,10 @@ public class Game{
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
-	public static final String username = "Benny2";
+	public static final String username = "Benny";
 	
-	public static void main(String[] args) {
+	public Game()
+	{
 		JFrame frame = new JFrame("Call of Pudge: Modern Hookfare");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -46,21 +46,25 @@ public class Game{
 		frame.setVisible(true);
 		
 		
-		chatBox = new ChatBox(5,20,client);
+		chatBox = new JTextArea(5,20);
 		chatBox.setEditable(false);
 		chatScroll = new JScrollPane(chatBox);
 		chatBox.setSize(WIDTH * SCALE,100);
 		chatBox.setLocation(0, HEIGHT * SCALE);
 		
-		chatArea = new ChatArea(1,20, out);
+		chatArea = new ChatArea(1,20, out, username);
 		
 		chatArea.setSize(WIDTH * SCALE,50);
 		chatArea.setLocation(0, HEIGHT * SCALE + 100);
 		frame.add(chatBox);
 		frame.add(chatArea);
 		
+		new Receiver();
 		
+	}
 	
+	public static void main(String[] args) {
+		new Game();
 	}
 	
 public static void connect()
@@ -77,6 +81,29 @@ public static void connect()
 	
 }
 
-	
+class Receiver implements Runnable{
+	// TODO Auto-generated method stub
+	public Receiver()
+	{
+		run();
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try{
+			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+			while(true){
+				String msg = in.readLine();
+				System.out.println(msg);
+				chatBox.append(msg + "\n");
+			}
+		}
+		catch(Exception e){ e.printStackTrace();}
+	}
+}	
+
 }
+
+
 

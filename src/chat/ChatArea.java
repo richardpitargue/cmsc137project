@@ -9,11 +9,14 @@ import javax.swing.JTextArea;
 public class ChatArea extends JTextArea implements KeyListener{
 	
 	private PrintWriter out;
-	public ChatArea(int rows, int cols, PrintWriter out)
+	private String username;
+	public ChatArea(int rows, int cols, PrintWriter out, String username)
 	{
 		super(rows,cols);
 		this.out = out;
+		this.username = username;
 		this.addKeyListener(this);
+		
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class ChatArea extends JTextArea implements KeyListener{
 		if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 		{
 			arg0.consume();
-			out.println(this.getText());
+			out.println(username + ":" + this.getText());
 			out.flush();
 			this.setText(null);
 		}
