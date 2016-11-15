@@ -95,19 +95,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread = new Thread(this);
 		gameThread.start();
 		
-		// instantiate this player
-		gsm.player = new Player("benny2", null, port);
-		// try to connect to the server
+		gsm.player = new Player("benny3", null);
+
 		connect();
 	}
 	
 	private void connect() {
-		while(!connected) {
 			send();
 			connected = true;
-		
-		}
-		
 	}
 	public void receive()
 	{
@@ -130,7 +125,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		{
 			e.printStackTrace();
 		}
-		//System.out.println("Received");
 	}
 	public void send()
 	{
@@ -152,7 +146,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			e.printStackTrace();
 		}
 		}
-		//System.out.println("Sent");
 	}
 	@Override
 	public void run() {

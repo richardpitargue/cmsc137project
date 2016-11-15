@@ -5,26 +5,28 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
 import game.client.Player;
-import game.client.player.Pudge;
 
 public class GameCreationState extends State {
 	
 	
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
+	private BufferedImage sprites[][];
 	
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
-		
+		sprites = new BufferedImage[4][4];
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
+			for(int i = 0;  i < 4; i++)
+				for(int j = 0; j < 4; j++)
+					sprites[i][j] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("sprite_" + i + "_" + j + ".png"));
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,16 +46,11 @@ public class GameCreationState extends State {
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 		for(Player p : gsm.players)
-			p.draw(g);
-			
-			
-//		connectedPlayersLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("connected_players.png"));
-//		g.drawImage(connectedPlayersLabel, 50, 0, 250, 30, null);
-//			
-//		optionsLabel = ImageIO.read(getClass().getClassLoader().getResourceAsStream("options.png"));
-//		g.drawImage(optionsLabel, 400, 0, 150, 30, null);
+		{
+			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
+			p.draw(g, sprites);
+		}	
 
-//		g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		
 	}
 
@@ -75,7 +72,6 @@ public class GameCreationState extends State {
 		} else if(keyCode == KeyEvent.VK_ENTER) {
 			//System.out.println("GAME START");
 		}
-		System.out.println(gsm.player.getName() +" " + keyCode);
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			gsm.player.move(0);

@@ -6,12 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
@@ -21,7 +17,6 @@ import game.client.Player;
 
 public class Server implements Runnable {
 	
-	public ObjectInputStream inStream = null;
 	public ArrayList<Player> players;
 	public List<Lobby> lobbies;
 	public Boolean ingame = false;
@@ -29,6 +24,13 @@ public class Server implements Runnable {
 	private DatagramChannel channel;
 	private static final int memorySize = 8192;
 	private static final int serverPort = 1234;
+	private ByteBuffer buf;
+	private byte[] byt;
+	private ObjectInputStream iStream;
+	private ByteArrayOutputStream bStream;
+	private ObjectOutput oo;
+	private Object obj;
+	
 
 	public Server(int playerCount)
 	{
@@ -47,7 +49,7 @@ public class Server implements Runnable {
 	public void run() {
 		while(true) {
 			try {
-				ByteBuffer buf = ByteBuffer.allocate(memorySize);
+				buf = ByteBuffer.allocate(memorySize);
 				
 				SocketAddress senderAddress = channel.receive(buf);
 				if(senderAddress == null)
@@ -57,9 +59,9 @@ public class Server implements Runnable {
 				buf.get(byt, 0, byt.length);
 				
 				
-				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(byt));
+				iStream = new ObjectInputStream(new ByteArrayInputStream(byt));
 				
-				Object obj = iStream.readObject();
+				obj = iStream.readObject();
 				
 				if(obj instanceof Lobby) {
 					Lobby lobby = (Lobby) obj;
@@ -72,7 +74,6 @@ public class Server implements Runnable {
 						continue;
 					for(Player p: players)
 					{
-						System.out.println(p.equals(player));
 						if(p.equals(player))
 							continue;
 					}
@@ -112,16 +113,15 @@ public class Server implements Runnable {
 	private void broadcast() {
 		// TODO Auto-generated method stub
 		try{
-			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			ObjectOutput oo = new ObjectOutputStream(bStream); 
+			bStream = new ByteArrayOutputStream();
+			oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(players);
 			oo.close();
-			byte[] buf = new byte[512]; 
-			buf = bStream.toByteArray();
+			byt = new byte[512]; 
+			byt= bStream.toByteArray();
 	
 			for(Player p : players) {
-				System.out.println(p.getName() + " " + p.getX() + " " + p.getY());
-				channel.send(ByteBuffer.wrap(buf), p.getAddress());
+				channel.send(ByteBuffer.wrap(byt), p.getAddress());
 			}
 			//System.out.println("Broadcasted");
 		}

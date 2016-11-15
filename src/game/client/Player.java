@@ -5,6 +5,7 @@ import java.net.SocketAddress;
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -12,7 +13,6 @@ public class Player implements Serializable
 {
 	private static final long serialVersionUID = 45648976546542154L;
 	private SocketAddress address;
-	private int port;
 	private String name;
 	private int x,y;
 	private static final int width = 50;
@@ -21,11 +21,10 @@ public class Player implements Serializable
 	private int direction;
 	private boolean changed;
 	
-	public Player(String name, SocketAddress address, int port)
+	public Player(String name, SocketAddress address)
 	{
 		this.name = name;
 		this.address = address;
-		this.port = port;
 		this.x = 0;
 		this.y = 0;
 		this.frame = 0;
@@ -69,11 +68,6 @@ public class Player implements Serializable
 	{
 		return this.direction;
 	}
-	
-	public int getPort()
-	{
-		return this.port;
-	}
 	public String getName()
 	{
 		return this.name;
@@ -99,38 +93,20 @@ public class Player implements Serializable
 	{
 		this.address = address;
 	}
-	public String print()
-	{
-		return(name + " "+ x + " " + y + " " + address + " " + port);
-	}
 	
 	public boolean equals(Object player) {
 		
 		Player p2 = (Player) player;
 		if(name.compareTo(p2.getName()) == 0)
-		{
 			return true;
-		}
-		if(player == null) {
+		else
 			return false;
-		}
 		
-		if(!(player instanceof Player)) {
-			return false;
-		}
-		
-		if(p2.address != address) {
-			return false;
-		} else if(p2.port != port) {
-			return false;
-		}
-		
-		return true;
 	}
 	
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, BufferedImage[][] sprites) {
 		try{
-		g.drawImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("sprite_" + direction + "_" + frame + ".png")), x, y, width, height, null);
+		g.drawImage(sprites[direction][frame], x, y, width, height, null);
 		}catch(Exception e){}
 	}
 	public void move(int direction) {
