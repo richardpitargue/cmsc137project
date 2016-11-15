@@ -9,6 +9,7 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import chat.ChatArea;
 
@@ -49,14 +50,16 @@ public class Game{
 		chatBox = new JTextArea(5,20);
 		chatBox.setEditable(false);
 		chatScroll = new JScrollPane(chatBox);
-		chatBox.setSize(WIDTH * SCALE,100);
-		chatBox.setLocation(0, HEIGHT * SCALE);
+		chatScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.add(chatScroll);
+		chatScroll.setSize(WIDTH * SCALE,100);
+		chatScroll.setLocation(0, HEIGHT * SCALE);
 		
 		chatArea = new ChatArea(1,20, out, username);
 		
 		chatArea.setSize(WIDTH * SCALE,50);
 		chatArea.setLocation(0, HEIGHT * SCALE + 100);
-		frame.add(chatBox);
+		frame.add(chatScroll);
 		frame.add(chatArea);
 		
 		new Receiver();
@@ -97,6 +100,7 @@ class Receiver implements Runnable{
 				String msg = in.readLine();
 				System.out.println(msg);
 				chatBox.append(msg + "\n");
+				chatBox.setCaretPosition(chatBox.getDocument().getLength());
 			}
 		}
 		catch(Exception e){ e.printStackTrace();}
