@@ -16,9 +16,11 @@ public class GameCreationState extends State {
 	
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
 	private BufferedImage sprites[][];
+
 	
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
+		
 		sprites = new BufferedImage[4][4];
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));

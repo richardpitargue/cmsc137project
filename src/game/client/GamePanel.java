@@ -18,6 +18,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import game.client.gsm.GameStateManager;
 import game.client.gsm.MenuState;
@@ -30,6 +32,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
 	private static final int packetSize = 8192;
+	private String username;
+	
+	private JTextArea chatBox;
+	private JScrollPane chatScroll;
 	
 	private Thread gameThread;
 	private boolean running = false;
@@ -44,12 +50,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private DatagramChannel channel;
 	private InetSocketAddress serverAddress;
 	
-	public GamePanel(String server, int serverPort) {
+	public GamePanel(String server, String username, int serverPort) {
 		super();
-		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		
+		this.username = username;
+		//setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		setSize(WIDTH * SCALE, HEIGHT * SCALE);
+		setLocation(0,0);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D) image.getGraphics();
+		
+		
+		
 		gsm = new GameStateManager();
 		gsm.changeState(new MenuState(gsm), false);
 		
@@ -76,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread = new Thread(this);
 		gameThread.start();
 		
-		gsm.player = new Player("benny2", null);
+		gsm.player = new Player(username, null);
 
 		connect();
 	}
@@ -210,6 +221,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		gsm.mouseReleased(e);
+		this.grabFocus();
 	}
 
 	@Override

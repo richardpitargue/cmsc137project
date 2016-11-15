@@ -1,18 +1,25 @@
 package game.server;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
+import chat.ClientThread;
 import game.client.Player;
 
 public class Server implements Runnable {
@@ -30,6 +37,9 @@ public class Server implements Runnable {
 	private ByteArrayOutputStream bStream;
 	private ObjectOutput oo;
 	private Object obj;
+	private Vector<Socket> clientSockets;
+	private Vector<String> clientNames;
+	private ServerSocket tcpServer;
 	
 
 	public Server(int playerCount)
@@ -41,6 +51,9 @@ public class Server implements Runnable {
 			channel = DatagramChannel.open();
 			channel.socket().bind(new InetSocketAddress(serverPort));
 			channel.configureBlocking(false);
+			tcpServer = new ServerSocket(serverPort + 1);
+			clientSockets = new Vector<Socket>();
+			clientNames = new Vector<String>();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,6 +62,12 @@ public class Server implements Runnable {
 	public void run() {
 		while(true) {
 			try {
+				if(!ingame)
+				{
+					Socket client = tcpServer.accept();
+		            System.out.println("New client established!");
+		            ClientThread c = new ClientThread(client, clientSockets, clientNames);
+				}
 				buf = ByteBuffer.allocate(memorySize);
 				
 				SocketAddress senderAddress = channel.receive(buf);
@@ -131,6 +150,7 @@ public class Server implements Runnable {
 		}
 		
 	}
+	
 	
 	public static void main(String[] args) {
 		Server server = new Server(2);
