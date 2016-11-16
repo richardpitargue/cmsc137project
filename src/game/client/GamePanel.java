@@ -128,7 +128,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(gsm.player);
 			oo.close();
-			byte[] buf = new byte[packetSize]; 
+			byte[] buf = new byte[200]; 
 			buf = bStream.toByteArray();
 			channel.send(ByteBuffer.wrap(buf), serverAddress);
 			gsm.player.setChanged(false);
