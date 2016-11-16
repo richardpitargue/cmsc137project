@@ -72,4 +72,12 @@ public class GameStateManager {
 		states.peek().mouseExited(e);
 	}
 	
+	public void mouseDragged(MouseEvent e) {
+		states.peek().mouseDragged(e);	
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		states.peek().mouseMoved(e);
+	}
+	
 }

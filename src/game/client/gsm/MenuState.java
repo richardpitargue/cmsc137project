@@ -9,11 +9,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.components.Button;
 
 public class MenuState extends State {
 	
+	private Button startButton;
+	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
+		startButton = new Button("START", 50, 50, 50, 25);
 	}
 
 	@Override
@@ -40,6 +44,8 @@ public class MenuState extends State {
 			g.drawImage(logo2, 105, 55, 400, 25, null);
 			
 			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
+			
+			startButton.draw(g);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,32 +78,37 @@ public class MenuState extends State {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		startButton.mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		startButton.mouseReleased(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		startButton.mouseMoved(e);
 	}
 
 }

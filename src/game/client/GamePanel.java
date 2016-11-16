@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -14,7 +15,7 @@ import javax.swing.JPanel;
 import game.client.gsm.GameStateManager;
 import game.client.gsm.MenuState;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		
 		start();
 	}
@@ -70,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			lastFPSTime += updateLength;
 			if(lastFPSTime >= 1000000000) {
-				System.out.println("FPS: " + fps);
+				//System.out.println("FPS: " + fps);
 				fps = 0;
 				lastFPSTime = 0;
 			}
@@ -140,6 +142,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	@Override
 	public void mouseExited(MouseEvent e) {
 		gsm.mouseExited(e);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		gsm.mouseDragged(e);	
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		gsm.mouseMoved(e);
 	}
 
 }
