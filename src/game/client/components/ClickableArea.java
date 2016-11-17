@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import game.client.Game;
 
-public class Button {
+public class ClickableArea {
 	
 	public final int x;
 	public final int y;
@@ -16,58 +16,35 @@ public class Button {
 	public final int height;
 	
 	private BufferedImage image;
-	private String text;
 	private boolean clicking = false;
+	private boolean animate = false;
 
-	public Button(int x1, int y1, int width, int height) {
+	public ClickableArea(int x1, int y1, int width, int height) {
 		this.x = x1;
 		this.y = y1;
 		this.width = width;
 		this.height = height;
 		this.image = null;
-		this.text = null;
 	}
 	
-	public Button(BufferedImage image, int x1, int y1, int width, int height) {
+	public ClickableArea(BufferedImage image, int x1, int y1, int width, int height) {
 		this.x = x1;
 		this.y = y1;
 		this.width = width;
 		this.height = height;
 		this.image = image;
-		this.text = null;
 	}
 	
-	public Button(String text, int x1, int y1, int width, int height) {
-		this.x = x1;
-		this.y = y1;
-		this.width = width;
-		this.height = height;
-		this.image = null;
-		this.text = text;
+	public void setAnimation(boolean animate) {
+		this.animate = animate;
 	}
 	
 	public void draw(Graphics2D g) {
-		if(!clicking) {
-			g.clearRect(x, y, width, height);
-		}
-		
 		if(image != null) {
 			g.drawImage(image, x, y, null);
-		} else {
-			g.setColor(Color.GRAY);
-			g.fillRect(x, y, width, height);
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, width, height);
-			g.setColor(Color.WHITE);
-			
-			if(text != null) {
-				int tx = width / 2 - (text.length() / 2);
-				int ty = height / 2;
-				g.drawString(text, x + tx, y + ty);
-			}
 		}
 		
-		if(clicking) {
+		if(animate && clicking) {
 			g.setColor(new Color(0f, 0f, 0f, 0.3f));
 			g.fillRect(x, y, width, height);
 		}

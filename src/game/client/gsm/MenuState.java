@@ -9,11 +9,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
-import game.client.components.Button;
+import game.client.components.ClickableArea;
 
 public class MenuState extends State {
 	
-	private Button startButton;
+	private ClickableArea startButton;
 	
 	private BufferedImage logo;
 	private BufferedImage logo2;
@@ -21,7 +21,8 @@ public class MenuState extends State {
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
-		startButton = new Button("START", 50, 50, 50, 25);
+		startButton = new ClickableArea(null, 50, 50, 50, 25);
+		startButton.setAnimation(true);
 		try {
 			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
 			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
