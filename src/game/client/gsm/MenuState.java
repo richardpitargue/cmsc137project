@@ -15,9 +15,20 @@ public class MenuState extends State {
 	
 	private Button startButton;
 	
+	private BufferedImage logo;
+	private BufferedImage logo2;
+	private BufferedImage background;
+	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
 		startButton = new Button("START", 50, 50, 50, 25);
+		try {
+			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
+			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
+			background = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -32,23 +43,13 @@ public class MenuState extends State {
 
 	@Override
 	public void draw(Graphics2D g) {
-		BufferedImage img, logo, logo2;
-		try {
-			img = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
-			g.drawImage(img, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-			
-			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
-			g.drawImage(logo, 55, 5, 500, 50, null);
-			
-			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
-			g.drawImage(logo2, 105, 55, 400, 25, null);
-			
-			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
-			
-			startButton.draw(g);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		g.drawImage(background, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+		g.drawImage(logo, 55, 5, 500, 50, null);
+		g.drawImage(logo2, 105, 55, 400, 25, null);
+		
+		g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
+		
+		startButton.draw(g);
 		
 	}
 
