@@ -48,12 +48,13 @@ public class LobbyState extends State {
 	}
 
 	@Override
-	public void keyTyped(int keyCode) {
+	public void keyTyped(KeyEvent e) {
 		
 	}
 
 	@Override
-	public void keyPressed(int keyCode) {
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
 		} else if(keyCode == KeyEvent.VK_ENTER) {
@@ -62,7 +63,7 @@ public class LobbyState extends State {
 	}
 
 	@Override
-	public void keyReleased(int keyCode) {
+	public void keyReleased(KeyEvent e) {
 		
 	}
 

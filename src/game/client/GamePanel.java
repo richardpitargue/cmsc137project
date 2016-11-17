@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			update(delta);
 			draw();
-			render();
+			repaint();
 			fps++;
 			
 			try {
@@ -98,10 +98,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gsm.draw(g);
 	}
 	
-	public void render() {
-		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		g2.dispose();
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 	}
 
 	@Override
