@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			lastFPSTime += updateLength;
 			if(lastFPSTime >= 1000000000) {
-				//System.out.println("FPS: " + fps);
+				System.out.println("FPS: " + fps);
 				fps = 0;
 				lastFPSTime = 0;
 			}
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			fps++;
 			
 			try {
-				Thread.sleep((System.nanoTime() - last + OPTIMAL_TIME) / 1000000);
+				Thread.sleep(Math.abs(last - System.nanoTime() + OPTIMAL_TIME) / 1000000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
