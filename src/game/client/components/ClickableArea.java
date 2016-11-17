@@ -18,14 +18,6 @@ public class ClickableArea {
 	private BufferedImage image;
 	private boolean clicking = false;
 	private boolean animate = false;
-
-	public ClickableArea(int x1, int y1, int width, int height) {
-		this.x = x1;
-		this.y = y1;
-		this.width = width;
-		this.height = height;
-		this.image = null;
-	}
 	
 	public ClickableArea(BufferedImage image, int x1, int y1, int width, int height) {
 		this.x = x1;
