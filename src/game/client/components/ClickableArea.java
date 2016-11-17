@@ -18,6 +18,7 @@ public class ClickableArea {
 	private BufferedImage image;
 	private boolean clicking = false;
 	private boolean animate = false;
+	private Color animationColor;
 	
 	public ClickableArea(BufferedImage image, int x1, int y1, int width, int height) {
 		this.x = x1;
@@ -25,10 +26,15 @@ public class ClickableArea {
 		this.width = width;
 		this.height = height;
 		this.image = image;
+		this.animationColor = new Color(0f, 0f, 0f, 0.3f);
 	}
 	
 	public void setAnimation(boolean animate) {
 		this.animate = animate;
+	}
+	
+	public void setAnimationColor(Color animationColor) {
+		this.animationColor = animationColor;
 	}
 	
 	public void draw(Graphics2D g) {
@@ -37,7 +43,7 @@ public class ClickableArea {
 		}
 		
 		if(animate && clicking) {
-			g.setColor(new Color(0f, 0f, 0f, 0.3f));
+			g.setColor(animationColor);
 			g.fillRect(x, y, width, height);
 		}
 		
