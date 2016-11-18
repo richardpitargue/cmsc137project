@@ -60,7 +60,6 @@ public class Pudge {
 		if(attacking) {
 			attackX += velX;
 			attackY += velY;
-			System.out.println(attackX + " : " + attackY);
 			
 			if(attackX >= maxAttackX && attackY >= maxAttackY) {
 				attacking = false;
@@ -123,7 +122,7 @@ public class Pudge {
 	    velX = a;
 	    velY = b;
 		
-		System.out.println("Click position (X, Y):  " + maxAttackX + ", " + maxAttackY);
+		//System.out.println("Click position (X, Y):  " + maxAttackX + ", " + maxAttackY);
 		
 		frame = (frame + 1) % 4;
 	}
