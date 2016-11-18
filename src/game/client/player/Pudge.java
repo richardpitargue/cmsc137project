@@ -20,11 +20,14 @@ public class Pudge {
 	private int frame;
 	private int direction;
 	
-	private int attackX;
-	private int attackY;
+	private float attackX;
+	private float attackY;
+	private float velX, velY;
+	
 	private int maxAttackX;
 	private int maxAttackY;
 	private boolean attacking;
+	
 	
 	private BufferedImage[][] sprite;
 	private BufferedImage[] hook;
@@ -55,17 +58,9 @@ public class Pudge {
 	
 	public void update() {
 		if(attacking) {
-			if(maxAttackX-this.x > 0) {
-				attackX += 5;
-			} else {
-				attackX -= 5;
-			}
-			
-			if(maxAttackY-this.y > 0) {
-				attackY += 5;
-			} else {
-				attackY -= 5;
-			}
+			attackX += velX;
+			attackY += velY;
+			System.out.println(attackX + " : " + attackY);
 			
 			if(attackX >= maxAttackX && attackY >= maxAttackY) {
 				attacking = false;
@@ -76,7 +71,7 @@ public class Pudge {
 	public void draw(Graphics2D g) {
 		g.drawImage(sprite[direction][frame], x, y, width, height, null);
 		if(attacking){
-			g.drawImage(hook[direction], attackX, attackY, width, height, null);
+			g.drawImage(hook[direction], (int)attackX, (int)attackY, width, height, null);
 		}
 	}
 	
@@ -107,12 +102,26 @@ public class Pudge {
 		frame = (frame + 1) % 4;
 	}
 	
+	
 	public void attack(int x, int y) {
+		float moveSpeed = 6;
+		
 		attacking = true;
 		maxAttackX = (x/2);
 		maxAttackY = (y/2);
+		
 		attackX = this.x;
 		attackY = this.y;
+		
+		float a = (x/2) - attackX;
+	    float b = (y/2) - attackY;
+	    float angle = (float) java.lang.Math.hypot(a, b);
+	    a /= angle;
+	    b /= angle;
+	    a *= moveSpeed;
+	    b *= moveSpeed;
+	    velX = a;
+	    velY = b;
 		
 		System.out.println("Click position (X, Y):  " + maxAttackX + ", " + maxAttackY);
 		
