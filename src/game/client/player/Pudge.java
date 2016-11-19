@@ -20,9 +20,10 @@ public class Pudge {
 	private int frame;
 	private int direction;
 	
-	private float attackX;
-	private float attackY;
-	private float velX, velY;
+	private double attackX;
+	private double attackY;
+	private double velX, velY;
+	private double distX, distY;
 	
 	private int maxAttackX;
 	private int maxAttackY;
@@ -60,8 +61,10 @@ public class Pudge {
 		if(attacking) {
 			attackX += velX;
 			attackY += velY;
+			distX += Math.abs(velX);
+			distY += Math.abs(velY);
 			
-			if(attackX >= maxAttackX && attackY >= maxAttackY) {
+			if(Math.hypot(distX, distY) >= 300) {
 				attacking = false;
 			}
 		}
@@ -103,18 +106,42 @@ public class Pudge {
 	
 	
 	public void attack(int x, int y) {
-		float moveSpeed = 4;
+		double moveSpeed = 4;
 		
 		attacking = true;
 		maxAttackX = (x/2);
 		maxAttackY = (y/2);
+		distX = 0;
+		distY = 0;
+		
+		
+		double degrees  = Math.toDegrees(Math.atan2(maxAttackY - this.y, maxAttackX - this.x));
+		
+		if(degrees < 0){
+	        degrees += 360;
+	    }
+		
+		System.out.println(degrees + "DEGREEs");
+		
+		
+		if(0 <= degrees && degrees < 45)
+			this.move(Pudge.RIGHT);
+		else if(45 <= degrees && degrees < 135)
+			this.move(Pudge.DOWN);
+		else if(135 <= degrees && degrees < 225)
+			this.move(Pudge.LEFT);
+		else if(225 <= degrees && degrees < 315)
+			this.move(Pudge.UP);
+		else if(315 <= degrees && degrees <= 360)
+			this.move(Pudge.RIGHT);
+		
 		
 		attackX = this.x;
 		attackY = this.y;
 		
-		float a = (x/2) - attackX;
-	    float b = (y/2) - attackY;
-	    float angle = (float) java.lang.Math.hypot(a, b);
+		double a = (x/2) - attackX;
+		double b = (y/2) - attackY;
+		double angle = (float) java.lang.Math.hypot(a, b);
 	    a /= angle;
 	    b /= angle;
 	    a *= moveSpeed;
