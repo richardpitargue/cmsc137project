@@ -70,7 +70,7 @@ public class Pudge {
 	public void draw(Graphics2D g) {
 		g.drawImage(sprite[direction][frame], x, y, width, height, null);
 		if(attacking){
-			g.drawImage(hook[direction], (int)attackX, (int)attackY, width, height, null);
+			g.drawImage(hook[direction], (int) attackX, (int) attackY, width, height, null);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class Pudge {
 	
 	
 	public void attack(int x, int y) {
-		float moveSpeed = 6;
+		float moveSpeed = 4;
 		
 		attacking = true;
 		maxAttackX = (x/2);
