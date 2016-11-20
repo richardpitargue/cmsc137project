@@ -16,17 +16,22 @@ public class GameCreationState extends State {
 	
 	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
 	private BufferedImage sprites[][];
+	private BufferedImage hookSprite[];
 
 	
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
 		
 		sprites = new BufferedImage[4][4];
+		hookSprite = new BufferedImage[4];
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
 			for(int i = 0;  i < 4; i++)
 				for(int j = 0; j < 4; j++)
 					sprites[i][j] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("sprite_" + i + "_" + j + ".png"));
+			
+			for(int i = 0; i < 4; i++)
+				hookSprite[i] = ImageIO.read(getClass().getClassLoader().getResourceAsStream("hook_" + i + ".png"));
 			
 			
 		} catch (IOException e) {
@@ -50,7 +55,7 @@ public class GameCreationState extends State {
 		for(Player p : gsm.players)
 		{
 			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
-			p.draw(g, sprites);
+			p.draw(g, sprites, hookSprite);
 		}	
 
 		
@@ -103,7 +108,8 @@ public class GameCreationState extends State {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		System.out.println(e.getX());
+		gsm.player.attack(e.getX(), e.getY());
 	}
 	
 	@Override

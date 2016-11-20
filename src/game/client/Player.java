@@ -15,7 +15,9 @@ public class Player implements Serializable
 	private static final int height = 50;
 	private int frame;
 	private int direction;
-	private boolean changed;
+	private static boolean changed;
+	public static boolean attacking;
+	public static Hook hook;
 	
 	public Player(String name, SocketAddress address)
 	{
@@ -25,7 +27,9 @@ public class Player implements Serializable
 		this.y = 0;
 		this.frame = 0;
 		this.direction = 0;
-		this.changed = true;
+		changed = true;
+		Player.hook = new Hook(width,height);
+		Player.attacking = false;
 	}
 	
 	public void setPlayer(Player player)
@@ -34,11 +38,21 @@ public class Player implements Serializable
 		this.y = player.getY();
 		this.frame = player.getFrame();
 		this.direction = player.getDirection();
+		this.attacking = player.getAttacking();
+		Player.hook = player.getHook();
+	}
+	public boolean getAttacking()
+	{
+		return this.attacking;
+	}
+	public void setAttacking(boolean attacking)
+	{
+		this.attacking = attacking;
 	}
 	
-	public void setChanged(boolean val)
+	public static void setChanged(boolean val)
 	{
-		this.changed = val;
+		changed = val;
 	}
 	public boolean getChanged()
 	{
@@ -84,6 +98,10 @@ public class Player implements Serializable
 	{
 		this.y = y;
 	}
+	public Hook getHook()
+	{
+		return Player.hook;
+	}
 	
 	public void changeAddress(SocketAddress address)
 	{
@@ -100,37 +118,89 @@ public class Player implements Serializable
 		
 	}
 	
-	public void draw(Graphics2D g, BufferedImage[][] sprites) {
+	public void draw(Graphics2D g, BufferedImage[][] sprites, BufferedImage[] hookSprite) {
 		try{
 		g.drawImage(sprites[direction][frame], x, y, width, height, null);
-		}catch(Exception e){}
-	}
-	public void move(int direction) {
-
-		switch(direction) {
-			case 0:
-				this.direction = 0;
-				if(y!=0)
-					y-=5;
-				break;
-			case 1:
-				this.direction = 2;
-				if(y!=275)
-					y+=5;
-				break;
-			case 2:
-				this.direction = 3;
-				if(x != 0 && x != 340)
-					x-=5;
-				break;
-			case 3:
-				this.direction = 1;
-				if(x != 550 && x != 210)
-					x+=5;
-				break;
+		if(attacking)
+		{
+			System.out.println("attacking");
+			Player.hook.draw(g, hookSprite[direction]);
+			update();
 		}
-		frame = (frame + 1) % 4;
-		setChanged(true);
+		}catch(Exception e){}
+
+	}
+	public void update()
+	{
+		if(attacking)
+		{
+			System.out.println(Player.hook.totalD);
+			if(Player.hook.totalD >= 300)
+			{
+				attacking = false;
+				changed = true;
+			}
+		}
+	}
+	
+	public void move(int direction) {
+		
+		if(!attacking)
+		{
+			switch(direction) {
+				case 0:
+					this.direction = 0;
+					if(y!=0)
+						y-=5;
+					break;
+				case 1:
+					this.direction = 2;
+					if(y!=275)
+						y+=5;
+					break;
+				case 2:
+					this.direction = 3;
+					if(x != 0 && x != 340)
+						x-=5;
+					break;
+				case 3:
+					this.direction = 1;
+					if(x != 550 && x != 210)
+						x+=5;
+					break;
+			}
+			frame = (frame + 1) % 4;
+			changed = true;
+		}
+	}
+	
+	public void attack(int mouseX, int mouseY)
+	{
+		if(!attacking)
+		{
+			
+			double degrees = Math.toDegrees(Math.atan2(mouseY/2 - y,mouseX/2 - x));
+			
+			if(degrees < 0)
+				degrees += 360;
+			
+			if(0 <= degrees && degrees < 45)
+				direction = 1;
+			else if(45 <= degrees && degrees < 135)
+				direction = 2;
+			else if(135 <= degrees && degrees < 225)
+				direction = 3;
+			else if(225 <= degrees && degrees < 315)
+				direction = 0;
+			else if(315 <= degrees && degrees <= 360)
+				direction = 1;
+			
+			System.out.println("Attacking");
+			
+			attacking = true;
+			Player.hook.attack(mouseX, mouseY, x, y);
+			changed = true;
+		}
 	}
 	
 }
