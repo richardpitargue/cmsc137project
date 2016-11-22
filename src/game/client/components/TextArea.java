@@ -125,6 +125,7 @@ public class TextArea {
 			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		} else {
 			hasFocus = false;
+			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 	
