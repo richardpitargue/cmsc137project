@@ -21,6 +21,7 @@ public class Player implements Serializable
 	private int frame;
 	private int direction;
 	private boolean changed;
+	private boolean hookBack;
 	public boolean attacking;
 	public boolean isHooked;
 	
@@ -30,8 +31,8 @@ public class Player implements Serializable
 		this.address = address;
 		this.x = 400;
 		this.y = 200;
-			//this.x = 0;
-			//this.y = 0;
+			this.x = 0;
+			this.y = 0;
 		this.frame = 0;
 		this.direction = 0;
 		this.changed = true;
@@ -43,6 +44,7 @@ public class Player implements Serializable
 		this.hookVelY = 0;
 		this.attacking = false;
 		this.isHooked = false;
+		this.hookBack = false;
 	}
 	
 	public void setPlayer(Player player)
@@ -58,6 +60,11 @@ public class Player implements Serializable
 		this.hookDistY = player.getHookDistY();
 		this.hookVelX = player.getHookVelX();
 		this.hookVelY = player.getHookVelY();
+		this.hookBack = player.getHookBack();
+	}
+	public boolean getHookBack()
+	{
+		return this.hookBack;
 	}
 	public double getHookTotalD()
 	{
@@ -207,29 +214,52 @@ public class Player implements Serializable
 		{
 			hookX += hookVelX;
 			hookY += hookVelY;
-			hookDistX += Math.abs(hookVelX);
-			hookDistY += Math.abs(hookVelY);
+			System.out.println(hookBack);
+			if(!hookBack)
+			{
+				hookDistX += Math.abs(hookVelX);
+				hookDistY += Math.abs(hookVelY);
+			}
+			else
+			{
+				hookDistX -= Math.abs(hookVelX);
+				hookDistY -= Math.abs(hookVelY);
+			}
 			
 			hookTotalD = Math.hypot(hookDistX, hookDistY);
-			if( hookTotalD >= 300)
+			if( !hookBack && hookTotalD >= 300)
+			{
+				hookVelX = -hookVelX;
+				hookVelY = -hookVelY;
+				System.out.println("hookBack!");
+				hookBack = true;
+			}
+			else if(hookBack &&  hookTotalD <= 10)
 			{
 				attacking = false;
-				changed = true;
+				hookBack = false;
+			}
+			else
+			{	
+				Rectangle hookBox = new Rectangle((int) hookX, (int) hookY, 50, 50);
+				
+				for(Player p: players)
+				{
+					if(p.getName().compareTo(name)==0) continue;
+					
+					Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 50, 50);
+					if(hookBox.intersects(playerBox)){
+						System.out.println("HOOKED");
+						hookBack = true;
+						hookVelX = -hookVelX;
+						hookVelY = -hookVelY;
+					}
+				}
+				
+				
 			}
 			
 			changed = true;
-			
-			Rectangle hookBox = new Rectangle((int) hookX, (int) hookY, 50, 50);
-			
-			for(Player p: players)
-			{
-				if(p.getName().compareTo(name)==0) continue;
-				
-				Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 50, 50);
-				if(hookBox.intersects(playerBox)){
-					System.out.println("HOOKED");
-				}
-			}
 				
 		}
 		
