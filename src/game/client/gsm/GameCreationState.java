@@ -89,8 +89,6 @@ public class GameCreationState extends State {
 		} else if(keyCode == KeyEvent.VK_ENTER) {
 			//System.out.println("GAME START");
 		}
-		
-		
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			if(!playerCollision(0))
