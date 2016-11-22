@@ -37,10 +37,12 @@ public class Hook implements Serializable{
 		else
 			return false;
 	}
+	
 	public String getName()
 	{
 		return this.name;
 	}
+	
 	public void draw(Graphics2D g, BufferedImage[] hookSprite)
 	{
 		g.drawImage(hookSprite[direction], (int)x, (int)y, width, height, null);

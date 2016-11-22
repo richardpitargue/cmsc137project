@@ -65,7 +65,7 @@ public class GameCreationState extends State {
 				h.draw(g, hookSprite);
 				
 			if(gsm.player.getName().compareTo(h.getName()) == 0)
-				gsm.player.update();
+				gsm.player.update(gsm.players);
 		}
 
 		
@@ -137,6 +137,7 @@ public class GameCreationState extends State {
 		
 		return false;
 	}
+	
 
 	@Override
 	public void keyReleased(int keyCode) {
@@ -154,8 +155,26 @@ public class GameCreationState extends State {
 		if(!gsm.player.attacking)
 		{
 			gsm.player.attack(e.getX(), e.getY());
+			//hookPlayer();
 		}
 	}
+	
+//	public void hookPlayer(){
+//		if(gsm.player.attacking){
+//			Rectangle playerHitbox = new Rectangle(gsm.player.getX(), gsm.player.getY(), 50, 50);
+//			
+//			for(Hook h: gsm.hooks)
+//			{
+//				if(h.equals(gsm.hooks)) continue;
+//				
+//				Rectangle hook = new Rectangle((int) h.x, (int) h.y, 50, 50);
+//				if(hook.intersects(playerHitbox)){
+//					System.out.println("HOOKED");
+//				}
+//			}
+//		}
+//	}
+	
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {

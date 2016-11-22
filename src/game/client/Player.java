@@ -1,9 +1,10 @@
 package game.client;
-import java.net.SocketAddress;
-
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.net.SocketAddress;
+import java.util.ArrayList;
 
 public class Player implements Serializable
 {
@@ -21,13 +22,16 @@ public class Player implements Serializable
 	private int direction;
 	private boolean changed;
 	public boolean attacking;
+	public boolean isHooked;
 	
 	public Player(String name, SocketAddress address)
 	{
 		this.name = name;
 		this.address = address;
-		this.x = 110;
-		this.y = 110;
+		this.x = 400;
+		this.y = 200;
+			//this.x = 0;
+			//this.y = 0;
 		this.frame = 0;
 		this.direction = 0;
 		this.changed = true;
@@ -38,6 +42,7 @@ public class Player implements Serializable
 		this.hookVelX = 0;
 		this.hookVelY = 0;
 		this.attacking = false;
+		this.isHooked = false;
 	}
 	
 	public void setPlayer(Player player)
@@ -89,6 +94,10 @@ public class Player implements Serializable
 	public void setAttacking(boolean attacking)
 	{
 		this.attacking = attacking;
+	}
+	public void setIsHooked(boolean isHooked)
+	{
+		this.isHooked = isHooked;
 	}
 	
 	public void setChanged(boolean val)
@@ -157,8 +166,7 @@ public class Player implements Serializable
 	
 	public void draw(Graphics2D g, BufferedImage[][] sprites) {
 	
-		g.drawImage(sprites[direction][frame], x, y, width, height, null);
-		
+		g.drawImage(sprites[direction][frame], x, y, width, height, null);	
 
 	}
 	
@@ -193,7 +201,7 @@ public class Player implements Serializable
 		}
 	}
 	
-	public void update()
+	public void update(ArrayList<Player> players )
 	{
 		if(attacking)
 		{
@@ -209,11 +217,21 @@ public class Player implements Serializable
 				changed = true;
 			}
 			
-			
 			changed = true;
+			
+			Rectangle hookBox = new Rectangle((int) hookX, (int) hookY, 50, 50);
+			
+			for(Player p: players)
+			{
+				if(p.getName().compareTo(name)==0) continue;
+				
+				Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 50, 50);
+				if(hookBox.intersects(playerBox)){
+					System.out.println("HOOKED");
+				}
+			}
+				
 		}
-		
-		
 		
 	}
 	
@@ -239,7 +257,6 @@ public class Player implements Serializable
 				direction = 1;
 			
 			System.out.println("Attacking");
-			
 			
 			hookX = x;
 			hookY = y;
