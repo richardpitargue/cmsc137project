@@ -1,6 +1,7 @@
 package game.client.gsm;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -14,7 +15,7 @@ import game.client.Player;
 public class GameCreationState extends State {
 	
 	
-	private BufferedImage connectedPlayersLabel, optionsLabel, bg;
+	private BufferedImage bg;
 	private BufferedImage sprites[][];
 	private BufferedImage hookSprite[];
 
@@ -79,21 +80,55 @@ public class GameCreationState extends State {
 		} else if(keyCode == KeyEvent.VK_ENTER) {
 			//System.out.println("GAME START");
 		}
+		
+		
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+			if(!playerCollision(0))
 			gsm.player.move(0);
 		}
 		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
+			if(!playerCollision(2))
 			gsm.player.move(2);
 		}
 		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
+			if(!playerCollision(1))
 			gsm.player.move(1);
 		}
 		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
+			if(!playerCollision(3))
 			gsm.player.move(3);
 		}
-		//System.out.println(gsm.pudges.get(i).player.getName());
+		//System.out.println(gsm.pudges.get(i).player.getName());	
+
+	}
+	
+	public boolean playerCollision(int direction){
+		int x = 0, y = 0;
+		switch(direction){
+			case 0: y = -7;
+				break;
+			case 1: y = 7;
+				break;
+			case 2: x = -7;
+				break;
+			case 3: x = 7;
+				break;
+		}
 		
+		Rectangle playerHitbox = new Rectangle(gsm.player.getX() + x, gsm.player.getY() + y, 50, 50);
+		for(Player p : gsm.players)
+		{
+			if(p.equals(gsm.player)) continue;
+			
+			Rectangle player = new Rectangle(p.getX() + x, p.getY() + y, 50, 50);
+			if(playerHitbox.intersects(player)){
+				return true;
+			}
+			
+		}
+		
+		return false;
 	}
 
 	@Override

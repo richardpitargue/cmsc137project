@@ -153,7 +153,7 @@ public class Server implements Runnable {
 	
 	
 	public static void main(String[] args) {
-		Server server = new Server(1);
+		Server server = new Server(2);
 		server.run();
 	}
 

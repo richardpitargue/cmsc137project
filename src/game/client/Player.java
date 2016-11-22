@@ -23,8 +23,8 @@ public class Player implements Serializable
 	{
 		this.name = name;
 		this.address = address;
-		this.x = 0;
-		this.y = 0;
+		this.x = 100;
+		this.y = 200;
 		this.frame = 0;
 		this.direction = 0;
 		changed = true;
