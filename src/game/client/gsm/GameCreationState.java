@@ -80,8 +80,6 @@ public class GameCreationState extends State {
 		} else if(keyCode == KeyEvent.VK_ENTER) {
 			//System.out.println("GAME START");
 		}
-		
-		
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			if(!playerCollision(0))
@@ -106,13 +104,13 @@ public class GameCreationState extends State {
 	public boolean playerCollision(int direction){
 		int x = 0, y = 0;
 		switch(direction){
-			case 0: y = -7;
+			case 0: y = -10;
 				break;
-			case 1: y = 7;
+			case 1: y = 10;
 				break;
-			case 2: x = -7;
+			case 2: x = -10;
 				break;
-			case 3: x = 7;
+			case 3: x = 10;
 				break;
 		}
 		
@@ -121,7 +119,7 @@ public class GameCreationState extends State {
 		{
 			if(p.equals(gsm.player)) continue;
 			
-			Rectangle player = new Rectangle(p.getX() + x, p.getY() + y, 50, 50);
+			Rectangle player = new Rectangle(p.getX(), p.getY(), 50, 50);
 			if(playerHitbox.intersects(player)){
 				return true;
 			}

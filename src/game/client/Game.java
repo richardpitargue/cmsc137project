@@ -26,7 +26,7 @@ public class Game{
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
-	public static final String username = "Benny";
+	public static final String username = "Gege";
 	
 	public Game()
 	{
@@ -35,7 +35,7 @@ public class Game{
 		frame.setResizable(false);
 		frame.setSize(WIDTH * SCALE, HEIGHT * SCALE + 150);
 		frame.setLayout(null);
-		GamePanel p = new GamePanel("192.168.0.22", username, 1234);
+		GamePanel p = new GamePanel("192.168.1.103", username, 1234);
 		
 		
 		frame.add(p);
@@ -73,7 +73,7 @@ public class Game{
 public static void connect()
 {
 	try {
-		client = new Socket("192.168.0.22", 1235);
+		client = new Socket("192.168.1.103", 1235);
 		out = new PrintWriter(client.getOutputStream());
 		out.println(username);
 		out.flush();
