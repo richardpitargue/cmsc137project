@@ -1,6 +1,7 @@
 package game.client.gsm;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -9,102 +10,131 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import game.client.Game;
 import game.client.GamePanel;
 import game.client.components.ClickableArea;
-import game.client.components.TextArea;
 
 public class MenuState extends State {
+
+	private BufferedImage bg = null;
+	private BufferedImage logo = null;
 	
-//	private ClickableArea startButton;
-//	private TextArea chatInput;
+	private boolean enterAnimation;
+	private boolean exitAnimation;
+	private int y;
+	private int heightAnim;
+	private int targetHeight;
 	
-    private BufferedImage logo;
-    private BufferedImage logo2;
-	private BufferedImage background;
+	private ClickableArea option1;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
-//		startButton = new ClickableArea(null, 50, 50, 50, 25);
-//		startButton.setAnimation(true);
-//		startButton.setAnimationColor(new Color(1f, 1f, 1f, 0.1f));
-//		
-//		chatInput = new TextArea(0, 200, 600, 125, null, 0, Color.BLACK, Color.WHITE);
+		
 		try {
-			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
-			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
-			background = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
+			bg = ImageIO.read(getClass().getClassLoader().getResource("bg/title.png"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("File \"bg/title.png\" is missing.");
 		}
+		
+		try {
+			logo = ImageIO.read(getClass().getClassLoader().getResource("text/logo.png"));
+		} catch (IOException e) {
+			System.err.println("File \"text/logo.png\" is missing.");
+		}
+		
+		option1 = new ClickableArea("button/option1.png", GamePanel.WIDTH / 2 - (75/2), 125 + logo.getHeight() + 13, 75, 75);
 	}
 
 	@Override
 	public void onEnter() {
-		
+		enterAnimation = true;
+		exitAnimation = false;
+		y = 125 + logo.getHeight() + 8;
+		heightAnim = 0;
+		targetHeight = GamePanel.HEIGHT - (125 + logo.getHeight() + 10) - 8;
+		Game.getGamePanel().disableListeners();
 	}
 
 	@Override
 	public void update(double delta) {
-//		chatInput.update();
+		if(enterAnimation) {
+			if(heightAnim <= targetHeight) {
+				heightAnim += 5;
+			} else {
+				enterAnimation = false;
+				Game.getGamePanel().enableListeners();
+			}
+		}
+		
+		if(exitAnimation) {
+			if(heightAnim > 0) {
+				heightAnim -= 5;
+			} else {
+				exitAnimation = false;
+				Game.getGamePanel().enableListeners();
+				gsm.pop();
+			}
+		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.drawImage(background, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-		g.drawImage(logo, 55, 5, 500, 50, null);
-		g.drawImage(logo2, 105, 55, 400, 25, null);
+		if(bg != null) {
+			g.drawImage(bg, 0, 0, null);
+		}
+		if(logo != null) {
+			int x = (GamePanel.WIDTH / 2) - (logo.getWidth() / 2);
+			g.drawImage(logo, x, 125, null);
+		}
 		
-		g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
-//		g.setColor(Color.BLACK);
-//		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-//		
-//		startButton.draw(g);
-//		chatInput.draw(g);
-		
+		g.setColor(new Color(1f, 1f, 1f, 0.1f));
+		if(enterAnimation || exitAnimation) {
+			g.fillRect(0, y, GamePanel.WIDTH, heightAnim);
+		} else {
+			g.fillRect(0, y, GamePanel.WIDTH, targetHeight);
+			option1.draw(g);
+		}
 	}
 
 	@Override
 	public void onExit() {
-		
+		Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-//		if(chatInput.hasFocus()) {
-//			chatInput.keyPressed(e);
-//		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-//			chatInput.setFocus(true);
-//		}
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			gsm.changeState(new LobbyState(gsm), false);
+		int keyCode = e.getKeyCode();
+		
+		if(keyCode == KeyEvent.VK_ESCAPE) {
+			exitAnimation = true;
+			heightAnim = targetHeight;
+			Game.getGamePanel().disableListeners();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-//		chatInput.mouseClicked(e);
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-//		startButton.mousePressed(e);
+		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-//		startButton.mouseReleased(e);
+		
 	}
 
 	@Override
@@ -124,8 +154,7 @@ public class MenuState extends State {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		startButton.mouseMoved(e);
-//		chatInput.mouseMoved(e);
+		option1.mouseMoved(e);
 	}
 
 }

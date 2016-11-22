@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import game.client.gsm.GameStateManager;
-import game.client.gsm.MenuState;
+import game.client.gsm.TitleScreenState;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
@@ -41,12 +41,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		g = (Graphics2D) image.getGraphics();
 		
 		gsm = new GameStateManager();
-		gsm.changeState(new MenuState(gsm), false);
+		gsm.changeState(new TitleScreenState(gsm), false);
 		
-		addKeyListener(this);
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		
+		enableListeners();
 		start();
 	}
 	
@@ -54,6 +51,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		running = true;
 		gameThread = new Thread(this);
 		gameThread.start();
+	}
+	
+	public void enableListeners() {
+		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
+	
+	public void disableListeners() {
+		removeKeyListener(this);
+		removeMouseListener(this);
+		removeMouseMotionListener(this);
 	}
 
 	@Override
