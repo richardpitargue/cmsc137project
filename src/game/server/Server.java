@@ -68,7 +68,7 @@ public class Server implements Runnable {
 		            System.out.println("New client established!");
 		            ClientThread c = new ClientThread(client, clientSockets, clientNames);
 				}
-				buf = ByteBuffer.allocate(200);
+				buf = ByteBuffer.allocate(512);
 				
 				SocketAddress senderAddress = channel.receive(buf);
 				if(senderAddress == null)
@@ -153,7 +153,7 @@ public class Server implements Runnable {
 	
 	
 	public static void main(String[] args) {
-		Server server = new Server(2);
+		Server server = new Server(1);
 		server.run();
 	}
 

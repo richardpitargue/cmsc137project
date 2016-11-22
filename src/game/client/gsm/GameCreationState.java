@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.Hook;
 import game.client.Player;
 
 public class GameCreationState extends State {
@@ -56,8 +57,16 @@ public class GameCreationState extends State {
 		for(Player p : gsm.players)
 		{
 			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
-			p.draw(g, sprites, hookSprite);
-		}	
+			p.draw(g, sprites);
+		}
+		for(Hook h: gsm.hooks)
+		{
+			if(h.active)
+				h.draw(g, hookSprite);
+				
+			if(gsm.player.getName().compareTo(h.getName()) == 0)
+				gsm.player.update();
+		}
 
 		
 	}
@@ -106,13 +115,13 @@ public class GameCreationState extends State {
 	public boolean playerCollision(int direction){
 		int x = 0, y = 0;
 		switch(direction){
-			case 0: y = -7;
+			case 0: y = -10;
 				break;
-			case 1: y = 7;
+			case 1: y = 10;
 				break;
-			case 2: x = -7;
+			case 2: x = -10;
 				break;
-			case 3: x = 7;
+			case 3: x = 10;
 				break;
 		}
 		
@@ -121,7 +130,7 @@ public class GameCreationState extends State {
 		{
 			if(p.equals(gsm.player)) continue;
 			
-			Rectangle player = new Rectangle(p.getX() + x, p.getY() + y, 50, 50);
+			Rectangle player = new Rectangle(p.getX(), p.getY(), 50, 50);
 			if(playerHitbox.intersects(player)){
 				return true;
 			}
@@ -144,7 +153,10 @@ public class GameCreationState extends State {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		System.out.println(e.getX());
-		gsm.player.attack(e.getX(), e.getY());
+		if(!gsm.player.attacking)
+		{
+			gsm.player.attack(e.getX(), e.getY());
+		}
 	}
 	
 	@Override

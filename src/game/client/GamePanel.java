@@ -88,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gameThread.start();
 		
 		gsm.player = new Player(username, null);
+		gsm.hooks = new ArrayList<Hook>();
 
 		connect();
 	}
@@ -110,6 +111,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				
 				ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(byt));
 				gsm.players = (ArrayList<Player>) iStream.readObject();
+				
+				for(Player p:gsm.players)
+				{
+					Hook hook = new Hook(p);
+					if(!gsm.hooks.contains(hook))
+						gsm.hooks.add(hook);
+					else
+					{
+						gsm.hooks.set(gsm.hooks.indexOf(hook), hook);
+					}
+					
+				}
 			}
 			
 		}
@@ -128,7 +141,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			ObjectOutput oo = new ObjectOutputStream(bStream); 
 			oo.writeObject(gsm.player);
 			oo.close();
-			byte[] buf = new byte[200]; 
+			byte[] buf = new byte[512]; 
 			buf = bStream.toByteArray();
 			channel.send(ByteBuffer.wrap(buf), serverAddress);
 			gsm.player.setChanged(false);

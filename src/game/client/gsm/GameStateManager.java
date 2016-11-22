@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import game.client.Player;
+import game.client.Hook;
 
 public class GameStateManager {
 	
 	private Stack<State> states;
 	public ArrayList<Player> players;
+	public ArrayList<Hook> hooks;
 	public String server = new String();
 	public int port;
 	public int serverPort;

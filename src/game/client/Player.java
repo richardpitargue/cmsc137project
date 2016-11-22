@@ -11,25 +11,33 @@ public class Player implements Serializable
 	private SocketAddress address;
 	private String name;
 	private int x,y;
+	private double hookX, hookY;
+	private double hookDistX, hookDistY;
+	private double hookVelX, hookVelY;
+	private double hookTotalD;
 	private static final int width = 50;
 	private static final int height = 50;
 	private int frame;
 	private int direction;
-	private static boolean changed;
-	public static boolean attacking;
-	public static Hook hook;
+	private boolean changed;
+	public boolean attacking;
 	
 	public Player(String name, SocketAddress address)
 	{
 		this.name = name;
 		this.address = address;
-		this.x = 100;
-		this.y = 200;
+		this.x = 110;
+		this.y = 110;
 		this.frame = 0;
 		this.direction = 0;
-		changed = true;
-		Player.hook = new Hook(width,height);
-		Player.attacking = false;
+		this.changed = true;
+		this.hookX = 0;
+		this.hookY = 0;
+		this.hookDistX = 0;
+		this.hookDistY = 0;
+		this.hookVelX = 0;
+		this.hookVelY = 0;
+		this.attacking = false;
 	}
 	
 	public void setPlayer(Player player)
@@ -39,20 +47,53 @@ public class Player implements Serializable
 		this.frame = player.getFrame();
 		this.direction = player.getDirection();
 		this.attacking = player.getAttacking();
-		Player.hook = player.getHook();
+		this.hookX = player.getHookX();
+		this.hookY = player.getHookY();
+		this.hookDistX = player.getHookDistX();
+		this.hookDistY = player.getHookDistY();
+		this.hookVelX = player.getHookVelX();
+		this.hookVelY = player.getHookVelY();
+	}
+	public double getHookTotalD()
+	{
+		return this.hookTotalD;
 	}
 	public boolean getAttacking()
 	{
 		return this.attacking;
+	}
+	public double getHookVelX()
+	{
+		return this.hookVelX;
+	}
+	public double getHookVelY()
+	{
+		return this.hookVelY;
+	}
+	public double getHookDistX()
+	{
+		return this.hookDistX;
+	}
+	public double getHookDistY()
+	{
+		return this.hookDistY;
+	}
+	public double getHookX()
+	{
+		return this.hookX;
+	}
+	public double getHookY()
+	{
+		return this.hookY;
 	}
 	public void setAttacking(boolean attacking)
 	{
 		this.attacking = attacking;
 	}
 	
-	public static void setChanged(boolean val)
+	public void setChanged(boolean val)
 	{
-		changed = val;
+		this.changed = val;
 	}
 	public boolean getChanged()
 	{
@@ -98,10 +139,6 @@ public class Player implements Serializable
 	{
 		this.y = y;
 	}
-	public Hook getHook()
-	{
-		return Player.hook;
-	}
 	
 	public void changeAddress(SocketAddress address)
 	{
@@ -118,29 +155,11 @@ public class Player implements Serializable
 		
 	}
 	
-	public void draw(Graphics2D g, BufferedImage[][] sprites, BufferedImage[] hookSprite) {
-		try{
+	public void draw(Graphics2D g, BufferedImage[][] sprites) {
+	
 		g.drawImage(sprites[direction][frame], x, y, width, height, null);
-		if(attacking)
-		{
-			System.out.println("attacking");
-			Player.hook.draw(g, hookSprite[direction]);
-			update();
-		}
-		}catch(Exception e){}
+		
 
-	}
-	public void update()
-	{
-		if(attacking)
-		{
-			System.out.println(Player.hook.totalD);
-			if(Player.hook.totalD >= 300)
-			{
-				attacking = false;
-				changed = true;
-			}
-		}
 	}
 	
 	public void move(int direction) {
@@ -174,6 +193,30 @@ public class Player implements Serializable
 		}
 	}
 	
+	public void update()
+	{
+		if(attacking)
+		{
+			hookX += hookVelX;
+			hookY += hookVelY;
+			hookDistX += Math.abs(hookVelX);
+			hookDistY += Math.abs(hookVelY);
+			
+			hookTotalD = Math.hypot(hookDistX, hookDistY);
+			if( hookTotalD >= 300)
+			{
+				attacking = false;
+				changed = true;
+			}
+			
+			
+			changed = true;
+		}
+		
+		
+		
+	}
+	
 	public void attack(int mouseX, int mouseY)
 	{
 		if(!attacking)
@@ -197,8 +240,25 @@ public class Player implements Serializable
 			
 			System.out.println("Attacking");
 			
+			
+			hookX = x;
+			hookY = y;
+			
+			hookDistX = 0;
+			hookDistY = 0;
+			
+			hookVelX = (mouseX/2) - x;
+			hookVelY = (mouseY/2) - y;
+			
+			double hypot = Math.hypot(hookVelX, hookVelY);
+			
+			hookVelX /= hypot;
+			hookVelY /= hypot;
+			
+			hookVelX *= 4;
+			hookVelY *= 4;
+			
 			attacking = true;
-			Player.hook.attack(mouseX, mouseY, x, y);
 			changed = true;
 		}
 	}
