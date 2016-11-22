@@ -28,7 +28,7 @@ public class MenuState extends State {
 //		startButton.setAnimation(true);
 //		startButton.setAnimationColor(new Color(1f, 1f, 1f, 0.1f));
 //		
-//		chatInput = new TextArea(0, 200, 600, 125);
+//		chatInput = new TextArea(0, 200, 600, 125, null, 0, Color.BLACK, Color.WHITE);
 		try {
 			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
 			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
@@ -94,7 +94,7 @@ public class MenuState extends State {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+//		chatInput.mouseClicked(e);
 	}
 
 	@Override
@@ -125,6 +125,7 @@ public class MenuState extends State {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 //		startButton.mouseMoved(e);
+//		chatInput.mouseMoved(e);
 	}
 
 }
