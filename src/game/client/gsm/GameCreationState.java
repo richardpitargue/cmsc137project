@@ -2,12 +2,15 @@ package game.client.gsm;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
 
 import game.client.GamePanel;
 import game.client.Hook;
@@ -26,6 +29,24 @@ public class GameCreationState extends State {
 		
 		sprites = new BufferedImage[4][4];
 		hookSprite = new BufferedImage[4];
+		
+		ActionListener updater = new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress);
+			}
+	
+		};
+
+		
+		Timer broadcaster = new Timer(20, updater);
+		broadcaster.start();
+		
+		
+		
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
 			for(int i = 0;  i < 4; i++)
@@ -64,8 +85,8 @@ public class GameCreationState extends State {
 			if(h.active)
 				h.draw(g, hookSprite);
 				
-			if(gsm.player.getName().compareTo(h.getName()) == 0)
-				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress);
+			
+				
 		}
 
 		
@@ -152,7 +173,7 @@ public class GameCreationState extends State {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		System.out.println(e.getX());
-		if(!gsm.player.attacking)
+		if(!gsm.player.attacking && !gsm.player.isHooked)
 		{
 			gsm.player.attack(e.getX(), e.getY());
 			//hookPlayer();

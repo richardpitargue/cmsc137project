@@ -142,7 +142,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 					}
 					
 					if(gsm.player.equals(p))
-						if(p.isHooked)
 							gsm.player.setPlayer(p);
 					
 				}

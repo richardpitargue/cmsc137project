@@ -38,8 +38,8 @@ public class Player implements Serializable
 		this.address = address;
 		this.x = 400;
 		this.y = 200;
-			this.x = 0;
-			this.y = 0;
+			//this.x = 0;
+			//this.y = 0;
 		this.frame = 0;
 		this.direction = 0;
 		this.changed = true;
@@ -61,6 +61,7 @@ public class Player implements Serializable
 	
 	public void setPlayer(Player player)
 	{
+		this.name = player.getName();
 		this.x = player.getX();
 		this.y = player.getY();
 		this.frame = player.getFrame();
@@ -189,7 +190,7 @@ public class Player implements Serializable
 	
 	public void move(int direction) {
 		
-		if(!attacking)
+		if(!attacking && !isHooked)
 		{
 			switch(direction) {
 				case 0:
@@ -230,17 +231,19 @@ public class Player implements Serializable
 					{
 						try
 						{	
+							Player updatePlayer = new Player();
 							p.setX((int)hookX);
 							p.setY((int)hookY);
-							p.setAttacking(true);
 							p.isHooked = true;
+							updatePlayer.setPlayer(p);
 							ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 							ObjectOutput oo = new ObjectOutputStream(bStream); 
-							oo.writeObject(p);
+							oo.writeObject(updatePlayer);
 							oo.close();
 							byte[] buf = new byte[512]; 
 							buf = bStream.toByteArray();
 							channel.send(ByteBuffer.wrap(buf), serverAddress);
+							
 						}
 						catch(Exception e)
 						{
@@ -287,15 +290,19 @@ public class Player implements Serializable
 						{
 							try
 							{	
-								p.setAttacking(false);
+								Player updatePlayer = new Player();
 								p.isHooked = false;
+								p.setX((int)hookX);
+								p.setY((int)hookY);
+								updatePlayer.setPlayer(p);
 								ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 								ObjectOutput oo = new ObjectOutputStream(bStream); 
-								oo.writeObject(p);
+								oo.writeObject(updatePlayer);
 								oo.close();
 								byte[] buf = new byte[512]; 
 								buf = bStream.toByteArray();
 								channel.send(ByteBuffer.wrap(buf), serverAddress);
+								
 							}
 							catch(Exception e)
 							{
