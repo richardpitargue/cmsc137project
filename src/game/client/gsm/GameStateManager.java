@@ -3,6 +3,8 @@ package game.client.gsm;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.net.InetSocketAddress;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -18,6 +20,8 @@ public class GameStateManager {
 	public int port;
 	public int serverPort;
 	public Player player;
+	public DatagramChannel channel;
+	public InetSocketAddress serverAddress;
 	
 	public GameStateManager() {
 		states = new Stack<State>();

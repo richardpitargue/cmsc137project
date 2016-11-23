@@ -65,7 +65,7 @@ public class GameCreationState extends State {
 				h.draw(g, hookSprite);
 				
 			if(gsm.player.getName().compareTo(h.getName()) == 0)
-				gsm.player.update(gsm.players);
+				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress);
 		}
 
 		

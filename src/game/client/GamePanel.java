@@ -3,6 +3,8 @@ package game.client;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 import game.client.gsm.GameStateManager;
 import game.client.gsm.MenuState;
@@ -47,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	// network shit
 	private boolean connected = false;
-	private DatagramChannel channel;
+	
 	private InetSocketAddress serverAddress;
 	
 	public GamePanel(String server, String username, int serverPort) {
@@ -70,10 +73,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		try
 		{
-			channel = DatagramChannel.open();
-			channel.socket().bind(new InetSocketAddress(0));
-			channel.configureBlocking(false);
-			serverAddress = new InetSocketAddress(server,serverPort);
+			gsm.channel = DatagramChannel.open();
+			gsm.channel.socket().bind(new InetSocketAddress(0));
+			gsm.channel.configureBlocking(false);
+			gsm.serverAddress = new InetSocketAddress(server,serverPort);
 		}catch(Exception e){}
 		
 		
@@ -94,7 +97,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	}
 	
 	private void connect() {
-			send();
+		
+		send();
+			ActionListener sender = new ActionListener()
+					{
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							// TODO Auto-generated method stub
+							send();
+							receive();
+						}
+				
+					};
+			
+					
+			Timer timer = new Timer(1, sender);
+			timer.start();
 			connected = true;
 	}
 	public void receive()
@@ -103,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		{
 			ByteBuffer buf = ByteBuffer.allocate(packetSize);
 			
-			if(channel.receive(buf) != null)
+			if(gsm.channel.receive(buf) != null)
 			{
 				buf.clear();
 				byte[] byt = new byte[buf.capacity()];
@@ -122,6 +141,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 						gsm.hooks.set(gsm.hooks.indexOf(hook), hook);
 					}
 					
+					if(gsm.player.equals(p))
+						if(p.isHooked)
+							gsm.player.setPlayer(p);
+					
 				}
 			}
 			
@@ -135,21 +158,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	{
 		if(gsm.player.getChanged())
 		{
-		try
-		{	
-			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			ObjectOutput oo = new ObjectOutputStream(bStream); 
-			oo.writeObject(gsm.player);
-			oo.close();
-			byte[] buf = new byte[512]; 
-			buf = bStream.toByteArray();
-			channel.send(ByteBuffer.wrap(buf), serverAddress);
-			gsm.player.setChanged(false);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+			try
+			{	
+				ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+				ObjectOutput oo = new ObjectOutputStream(bStream); 
+				oo.writeObject(gsm.player);
+				oo.close();
+				byte[] buf = new byte[512]; 
+				buf = bStream.toByteArray();
+				gsm.channel.send(ByteBuffer.wrap(buf), gsm.serverAddress);
+				gsm.player.setChanged(false);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	@Override
@@ -174,11 +197,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			}
 			
 			update(delta);
-			if(connected)
-			{
-				receive();
-				send();
-			}
 			draw();
 			render();
 			fps++;

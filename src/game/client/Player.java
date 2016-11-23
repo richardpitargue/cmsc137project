@@ -2,8 +2,14 @@ package game.client;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 
 public class Player implements Serializable
@@ -23,6 +29,7 @@ public class Player implements Serializable
 	private boolean changed;
 	private boolean hookBack;
 	public boolean attacking;
+	public String hookedOne;
 	public boolean isHooked;
 	
 	public Player(String name, SocketAddress address)
@@ -43,8 +50,13 @@ public class Player implements Serializable
 		this.hookVelX = 0;
 		this.hookVelY = 0;
 		this.attacking = false;
-		this.isHooked = false;
+		this.hookedOne = null;
 		this.hookBack = false;
+		this.isHooked = false;
+	}
+	public Player()
+	{
+		
 	}
 	
 	public void setPlayer(Player player)
@@ -61,6 +73,8 @@ public class Player implements Serializable
 		this.hookVelX = player.getHookVelX();
 		this.hookVelY = player.getHookVelY();
 		this.hookBack = player.getHookBack();
+		this.hookedOne = player.hookedOne;
+		this.isHooked = player.isHooked;
 	}
 	public boolean getHookBack()
 	{
@@ -101,10 +115,6 @@ public class Player implements Serializable
 	public void setAttacking(boolean attacking)
 	{
 		this.attacking = attacking;
-	}
-	public void setIsHooked(boolean isHooked)
-	{
-		this.isHooked = isHooked;
 	}
 	
 	public void setChanged(boolean val)
@@ -208,12 +218,43 @@ public class Player implements Serializable
 		}
 	}
 	
-	public void update(ArrayList<Player> players )
+	public void update(ArrayList<Player> players, DatagramChannel channel, InetSocketAddress serverAddress )
 	{
 		if(attacking)
 		{
+			if(hookedOne != null)
+			{
+				for(Player p: players)
+				{
+					if(p.getName().compareTo(hookedOne) == 0)
+					{
+						try
+						{	
+							p.setX((int)hookX);
+							p.setY((int)hookY);
+							p.setAttacking(true);
+							p.isHooked = true;
+							ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+							ObjectOutput oo = new ObjectOutputStream(bStream); 
+							oo.writeObject(p);
+							oo.close();
+							byte[] buf = new byte[512]; 
+							buf = bStream.toByteArray();
+							channel.send(ByteBuffer.wrap(buf), serverAddress);
+						}
+						catch(Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
 			hookX += hookVelX;
 			hookY += hookVelY;
+			
+			
+			
 			System.out.println(hookBack);
 			if(!hookBack)
 			{
@@ -234,12 +275,38 @@ public class Player implements Serializable
 				System.out.println("hookBack!");
 				hookBack = true;
 			}
-			else if(hookBack &&  hookTotalD <= 10)
+			else if(hookBack &&  hookTotalD <= 75)
 			{
 				attacking = false;
 				hookBack = false;
+				if(hookedOne != null)
+				{
+					for(Player p: players)
+					{
+						if(p.getName().compareTo(hookedOne) == 0)
+						{
+							try
+							{	
+								p.setAttacking(false);
+								p.isHooked = false;
+								ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+								ObjectOutput oo = new ObjectOutputStream(bStream); 
+								oo.writeObject(p);
+								oo.close();
+								byte[] buf = new byte[512]; 
+								buf = bStream.toByteArray();
+								channel.send(ByteBuffer.wrap(buf), serverAddress);
+							}
+							catch(Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				hookedOne = null;
 			}
-			else
+			else if (hookedOne == null)
 			{	
 				Rectangle hookBox = new Rectangle((int) hookX, (int) hookY, 50, 50);
 				
@@ -253,6 +320,7 @@ public class Player implements Serializable
 						hookBack = true;
 						hookVelX = -hookVelX;
 						hookVelY = -hookVelY;
+						hookedOne = p.getName();
 					}
 				}
 				

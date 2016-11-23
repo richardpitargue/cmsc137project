@@ -1,5 +1,7 @@
 package game.server;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +20,8 @@ import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import javax.swing.Timer;
 
 import chat.ClientThread;
 import game.client.Player;
@@ -102,7 +106,21 @@ public class Server implements Runnable {
 					if(players.size() == playerCount)
 					{
 						ingame = true;
-						broadcast();
+						
+						ActionListener sender = new ActionListener()
+						{
+
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								// TODO Auto-generated method stub
+								broadcast();
+							}
+					
+						};
+				
+						
+				Timer broadcaster = new Timer(30, sender);
+				broadcaster.start();
 						continue;
 					}	
 				}
@@ -118,7 +136,6 @@ public class Server implements Runnable {
 							p.setPlayer(player);
 						}
 					}
-					broadcast();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
