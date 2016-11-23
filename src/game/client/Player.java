@@ -28,6 +28,8 @@ public class Player implements Serializable
 	private int direction;
 	private boolean changed;
 	private boolean hookBack;
+	public int score;
+	public boolean team;
 	public boolean attacking;
 	public String hookedOne;
 	public boolean isHooked;
@@ -53,6 +55,8 @@ public class Player implements Serializable
 		this.hookedOne = null;
 		this.hookBack = false;
 		this.isHooked = false;
+		this.score = 0;
+		this.team = false;
 	}
 	public Player()
 	{
@@ -76,6 +80,8 @@ public class Player implements Serializable
 		this.hookBack = player.getHookBack();
 		this.hookedOne = player.hookedOne;
 		this.isHooked = player.isHooked;
+		this.score = player.score;
+		this.team = player.team;
 	}
 	public boolean getHookBack()
 	{

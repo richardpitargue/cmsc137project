@@ -1,5 +1,6 @@
 package game.client.gsm;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -77,6 +78,10 @@ public class GameCreationState extends State {
 		g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 		for(Player p : gsm.players)
 		{
+			if(p.team)
+				g.setColor(Color.BLUE);
+			else
+				g.setColor(Color.RED);
 			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
 			p.draw(g, sprites);
 		}

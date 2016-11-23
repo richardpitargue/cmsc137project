@@ -101,6 +101,19 @@ public class Server implements Runnable {
 							continue;
 					}
 					player.changeAddress(senderAddress);
+					if((players.size() + 1) % 2 == 0)
+						player.team = true;
+					else
+						player.team = false;
+					
+					if(player.team)
+						player.setX(50);
+					else
+						player.setX(400);
+					
+					int initialY = (((players.size()) / 2) + 1) * 51;
+					
+					player.setY(initialY);
 					players.add(player);
 					
 					if(players.size() == playerCount)
@@ -170,7 +183,7 @@ public class Server implements Runnable {
 	
 	
 	public static void main(String[] args) {
-		Server server = new Server(2);
+		Server server = new Server(4);
 		server.run();
 	}
 
