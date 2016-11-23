@@ -23,6 +23,7 @@ public class GameCreationState extends State {
 	private BufferedImage bg;
 	private BufferedImage sprites[][];
 	private BufferedImage hookSprite[];
+	private int team1,team2;
 
 	
 	public GameCreationState(GameStateManager gsm) {
@@ -30,6 +31,8 @@ public class GameCreationState extends State {
 		
 		sprites = new BufferedImage[4][4];
 		hookSprite = new BufferedImage[4];
+		team1 = 0;
+		team2 = 0;
 		
 		ActionListener updater = new ActionListener()
 		{
@@ -76,6 +79,8 @@ public class GameCreationState extends State {
 	public void draw(Graphics2D g) {		
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		g.drawImage(bg, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+		team1 = 0;
+		team2 = 0;
 		for(Player p : gsm.players)
 		{
 			if(p.team)
@@ -84,7 +89,18 @@ public class GameCreationState extends State {
 				g.setColor(Color.RED);
 			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
 			p.draw(g, sprites);
+			
+			if(p.team)
+				team1+=p.score;
+			else
+				team2+=p.score;
 		}
+		
+		g.setColor(Color.BLUE);
+		g.drawString(Integer.toString(team1), 50, 10);
+		g.setColor(Color.RED);
+		g.drawString(Integer.toString(team2), 300, 10);
+		
 		for(Hook h: gsm.hooks)
 		{
 			if(h.active)

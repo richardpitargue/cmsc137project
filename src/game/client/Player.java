@@ -334,6 +334,9 @@ public class Player implements Serializable
 						hookVelX = -hookVelX;
 						hookVelY = -hookVelY;
 						hookedOne = p.getName();
+						
+						if(p.team != team)
+							score+=1;
 					}
 				}
 				
