@@ -97,9 +97,9 @@ public class GameCreationState extends State {
 		}
 		
 		g.setColor(Color.BLUE);
-		g.drawString(Integer.toString(team1), 50, 10);
+		g.drawString(Integer.toString(team1), 120, 15);
 		g.setColor(Color.RED);
-		g.drawString(Integer.toString(team2), 300, 10);
+		g.drawString(Integer.toString(team2), 470, 15);
 		
 		for(Hook h: gsm.hooks)
 		{
