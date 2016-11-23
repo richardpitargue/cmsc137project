@@ -165,12 +165,12 @@ public class GameCreationState extends State {
 				break;
 		}
 		
-		Rectangle playerHitbox = new Rectangle(gsm.player.getX() + x, gsm.player.getY() + y, 50, 50);
+		Rectangle playerHitbox = new Rectangle(gsm.player.getX() + x, gsm.player.getY() + y, 10, 10);
 		for(Player p : gsm.players)
 		{
 			if(p.equals(gsm.player)) continue;
 			
-			Rectangle player = new Rectangle(p.getX(), p.getY(), 50, 50);
+			Rectangle player = new Rectangle(p.getX(), p.getY(), 10, 10);
 			if(playerHitbox.intersects(player)){
 				return true;
 			}
