@@ -211,7 +211,7 @@ public class Player implements Serializable
 					break;
 				case 2:
 					this.direction = 3;
-					if((x - 5) > 0 && (x - 5) <= 340)
+					if((x - 5) > 0 && (x - 5) != 340)
 						x-=5;
 					break;
 				case 3:
