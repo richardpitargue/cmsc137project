@@ -109,6 +109,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 	}
 

@@ -66,36 +66,49 @@ public class ClickableArea {
 			g.fillRect(x, y, width, height);
 		}
 		
-		if(animate && clicking) {
-			g.setColor(animationColor);
-			g.fillRect(x, y, width, height);
-		}
+//		if(animate && clicking) {
+//			g.setColor(animationColor);
+//			g.fillRect(x, y, width, height);
+//		}
 		
 		g.setColor(Color.WHITE);
 	}
 	
-	public void mouseClicked(MouseEvent e) {
+	public boolean mouseClicked(MouseEvent e) {
+		int x = e.getX()/2;
+		int y = e.getY()/2;
 		
+		// if inside bounds of the button
+		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
+			return true;
+		}
+		
+		return false;
 	}
 
-	public void mousePressed(MouseEvent e) {
+	public boolean mousePressed(MouseEvent e) {
 		int x = e.getX()/2;
 		int y = e.getY()/2;
 		
 		// if inside bounds of the button
 		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
 			clicking = true;
+			return true;
 		}
+		
+		return false;
 	}
 
-	public void mouseReleased(MouseEvent e) {
+	public boolean mouseReleased(MouseEvent e) {
 		int x = e.getX()/2;
 		int y = e.getY()/2;
 		
 		// if inside bounds of the button
 		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
-			clicking = false;
+			return true;
 		}
+		
+		return false;
 	}
 
 	
@@ -109,7 +122,7 @@ public class ClickableArea {
 			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		} else {
 			active = false;
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 	

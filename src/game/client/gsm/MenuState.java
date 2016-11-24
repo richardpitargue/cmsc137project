@@ -26,6 +26,7 @@ public class MenuState extends State {
 	private int targetHeight;
 	
 	private ClickableArea option1;
+	private ClickableArea option2;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -42,7 +43,8 @@ public class MenuState extends State {
 			System.err.println("File \"text/logo.png\" is missing.");
 		}
 		
-		option1 = new ClickableArea("button/option1.png", GamePanel.WIDTH / 2 - (75/2), 125 + logo.getHeight() + 13, 75, 75);
+		option1 = new ClickableArea("button/option1.png", GamePanel.WIDTH / 2 - (160/2), 125 + logo.getHeight() + 13, 75, 75);
+		option2 = new ClickableArea("button/option2.png", GamePanel.WIDTH / 2 - (160/2) + 85, 125 + logo.getHeight() + 13, 75, 75);
 	}
 
 	@Override
@@ -93,6 +95,7 @@ public class MenuState extends State {
 		} else {
 			g.fillRect(0, y, GamePanel.WIDTH, targetHeight);
 			option1.draw(g);
+			option2.draw(g);
 		}
 	}
 
@@ -129,7 +132,13 @@ public class MenuState extends State {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(option1.mousePressed(e)) {
+			gsm.pop();
+		}
 		
+		if(option2.mousePressed(e)) {
+			System.out.println("OLOL");
+		}
 	}
 
 	@Override
@@ -155,6 +164,7 @@ public class MenuState extends State {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		option1.mouseMoved(e);
+		option2.mouseMoved(e);
 	}
 
 }
