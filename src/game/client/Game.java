@@ -26,7 +26,7 @@ public class Game{
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
-	public static final String username = "Benny4";
+	public static final String username = "Benny2";
 	//public static final String username = "Gege";
 	
 	public Game()

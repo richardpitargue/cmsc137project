@@ -201,22 +201,22 @@ public class Player implements Serializable
 			switch(direction) {
 				case 0:
 					this.direction = 0;
-					if(y!=0)
+					if((y - 5) > 0)
 						y-=5;
 					break;
 				case 1:
 					this.direction = 2;
-					if(y!=275)
+					if((y + 5) <= 275)
 						y+=5;
 					break;
 				case 2:
 					this.direction = 3;
-					if(x != 0 && x != 340)
+					if((x - 5) > 0 && (x - 5) >= 340)
 						x-=5;
 					break;
 				case 3:
 					this.direction = 1;
-					if(x != 550 && x != 210)
+					if((x + 5) <= 550 && (x +5) >= 210)
 						x+=5;
 					break;
 			}
@@ -327,7 +327,7 @@ public class Player implements Serializable
 				{
 					if(p.getName().compareTo(name)==0) continue;
 					
-					Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 50, 50);
+					Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 20, 20);
 					if(hookBox.intersects(playerBox)){
 						System.out.println("HOOKED");
 						hookBack = true;

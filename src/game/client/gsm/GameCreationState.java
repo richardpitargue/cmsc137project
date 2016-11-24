@@ -46,7 +46,7 @@ public class GameCreationState extends State {
 		};
 
 		
-		Timer broadcaster = new Timer(20, updater);
+		Timer broadcaster = new Timer(15, updater);
 		broadcaster.start();
 		
 		
