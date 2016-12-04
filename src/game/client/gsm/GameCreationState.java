@@ -1,6 +1,7 @@
 package game.client.gsm;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -8,13 +9,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import game.client.GamePanel;
 import game.client.Hook;
+import game.client.Music;
 import game.client.Player;
 
 public class GameCreationState extends State {
@@ -24,10 +29,14 @@ public class GameCreationState extends State {
 	private BufferedImage sprites[][];
 	private BufferedImage hookSprite[];
 	private int team1,team2;
+	private Music music;
 
 	
 	public GameCreationState(GameStateManager gsm) {
 		super(gsm);
+		
+		this.music = new Music();
+		music.background();
 		
 		sprites = new BufferedImage[4][4];
 		hookSprite = new BufferedImage[4];
@@ -40,16 +49,14 @@ public class GameCreationState extends State {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress);
+				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress, music);
 			}
 	
 		};
 
 		
-		Timer broadcaster = new Timer(15, updater);
+		Timer broadcaster = new Timer(20, updater);
 		broadcaster.start();
-		
-		
 		
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
@@ -87,6 +94,7 @@ public class GameCreationState extends State {
 				g.setColor(Color.BLUE);
 			else
 				g.setColor(Color.RED);
+			g.setFont(new Font("default", Font.PLAIN, 12));
 			g.drawString(p.getName(), p.getX() + 5, p.getY() - 5);
 			p.draw(g, sprites);
 			
@@ -97,9 +105,10 @@ public class GameCreationState extends State {
 		}
 		
 		g.setColor(Color.BLUE);
-		g.drawString(Integer.toString(team1), 120, 15);
+		g.setFont(new Font("default", Font.BOLD, 20));
+		g.drawString(Integer.toString(team1), 120, 20);
 		g.setColor(Color.RED);
-		g.drawString(Integer.toString(team2), 470, 15);
+		g.drawString(Integer.toString(team2), 470, 20);
 		
 		for(Hook h: gsm.hooks)
 		{
@@ -134,19 +143,19 @@ public class GameCreationState extends State {
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			if(!playerCollision(0))
-			gsm.player.move(0);
+			gsm.player.move(0, music);
 		}
 		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
 			if(!playerCollision(2))
-			gsm.player.move(2);
+			gsm.player.move(2, music);
 		}
 		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
 			if(!playerCollision(1))
-			gsm.player.move(1);
+			gsm.player.move(1, music);
 		}
 		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
 			if(!playerCollision(3))
-			gsm.player.move(3);
+			gsm.player.move(3, music);
 		}
 		//System.out.println(gsm.pudges.get(i).player.getName());	
 
@@ -196,7 +205,7 @@ public class GameCreationState extends State {
 		System.out.println(e.getX());
 		if(!gsm.player.attacking && !gsm.player.isHooked)
 		{
-			gsm.player.attack(e.getX(), e.getY());
+			gsm.player.attack(e.getX(), e.getY(), music);
 			//hookPlayer();
 		}
 	}
