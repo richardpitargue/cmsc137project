@@ -80,11 +80,11 @@ public class ClickableArea {
 		int y = e.getY()/2;
 		
 		// if inside bounds of the button
-		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		} else {
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
+//		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//		} else {
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//		}
 	}
 	
 }

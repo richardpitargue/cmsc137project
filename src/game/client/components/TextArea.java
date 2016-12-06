@@ -120,13 +120,13 @@ public class TextArea {
 		int y = e.getY()/2;
 		
 		// if inside bounds of the button
-		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
-			hasFocus = true;
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-		} else {
-			hasFocus = false;
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
+//		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
+//			hasFocus = true;
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+//		} else {
+//			hasFocus = false;
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//		}
 	}
 	
 	public void mouseMoved(MouseEvent e) {
@@ -134,15 +134,15 @@ public class TextArea {
 		int y = e.getY()/2;
 		
 		// if inside bounds of the button
-		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
-			if(hasFocus) {
-				Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-			} else {
-				Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-		} else {
-			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
+//		if(x >= this.x && x <= (this.x + width) && y >= this.y && y <= (this.y + height)) {
+//			if(hasFocus) {
+//				Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+//			} else {
+//				Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//			}
+//		} else {
+//			Game.getGamePanel().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//		}
 	}
 	
 }

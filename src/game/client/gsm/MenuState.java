@@ -76,7 +76,8 @@ public class MenuState extends State {
 	}
 
 	@Override
-	public void keyPressed(int keyCode) {
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
 		if(keyCode == KeyEvent.VK_ENTER) {
 			gsm.changeState(new GameCreationState(gsm), false);
 // 	public void keyPressed(KeyEvent e) {

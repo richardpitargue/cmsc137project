@@ -128,12 +128,13 @@ public class GameCreationState extends State {
 	}
 
 	@Override
-	public void keyTyped(int keyCode) {
+	public void keyTyped(KeyEvent e) {
 		
 	}
 
 	@Override
-	public void keyPressed(int keyCode) {
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
 		//System.out.println(keyCode);
 		if(keyCode == KeyEvent.VK_ESCAPE) {
 			gsm.pop();
@@ -191,7 +192,7 @@ public class GameCreationState extends State {
 	
 
 	@Override
-	public void keyReleased(int keyCode) {
+	public void keyReleased(KeyEvent e) {
 		
 	}
 	
@@ -239,6 +240,18 @@ public class GameCreationState extends State {
 	
 	@Override
 	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	
