@@ -55,15 +55,15 @@ public class GameStateManager {
 	}
 	
 	public void keyTyped(KeyEvent e) {
-		states.peek().keyTyped(e.getKeyCode());
+		states.peek().keyTyped(e);
 	}
 
 	public void keyPressed(KeyEvent e) {
-		states.peek().keyPressed(e.getKeyCode());
+		states.peek().keyPressed(e);
 	}
 
 	public void keyReleased(KeyEvent e) {
-		states.peek().keyReleased(e.getKeyCode());
+		states.peek().keyReleased(e);
 	}
 	
 	public void mouseClicked(MouseEvent e) {
@@ -84,6 +84,14 @@ public class GameStateManager {
 
 	public void mouseExited(MouseEvent e) {
 		states.peek().mouseExited(e);
+	}
+	
+	public void mouseDragged(MouseEvent e) {
+		states.peek().mouseDragged(e);	
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		states.peek().mouseMoved(e);
 	}
 	
 }

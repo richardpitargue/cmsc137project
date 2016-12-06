@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,7 +28,7 @@ import javax.swing.Timer;
 import game.client.gsm.GameStateManager;
 import game.client.gsm.MenuState;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -70,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		
 		try
 		{
@@ -197,11 +199,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			
 			update(delta);
 			draw();
-			render();
+			repaint();
 			fps++;
 			
 			try {
-				Thread.sleep((System.nanoTime() - last + OPTIMAL_TIME) / 1000000);
+				Thread.sleep(Math.abs(last - System.nanoTime() + OPTIMAL_TIME) / 1000000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -217,10 +219,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		gsm.draw(g);
 	}
 	
-	public void render() {
-		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-		g2.dispose();
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 	}
 
 	@Override
@@ -262,6 +263,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	@Override
 	public void mouseExited(MouseEvent e) {
 		gsm.mouseExited(e);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		gsm.mouseDragged(e);	
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		gsm.mouseMoved(e);
 	}
 
 }
