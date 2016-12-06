@@ -14,6 +14,7 @@ import game.client.components.ClickableArea;
 import game.client.components.TextArea;
 
 public class MenuState extends State {
+
 	
 //	private ClickableArea startButton;
 //	private TextArea chatInput;
@@ -24,18 +25,18 @@ public class MenuState extends State {
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
-//		startButton = new ClickableArea(null, 50, 50, 50, 25);
-//		startButton.setAnimation(true);
-//		startButton.setAnimationColor(new Color(1f, 1f, 1f, 0.1f));
-//		
-//		chatInput = new TextArea(0, 200, 600, 125, null, 0, Color.BLACK, Color.WHITE);
-		try {
-			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
-			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
-			background = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+// //		startButton = new ClickableArea(null, 50, 50, 50, 25);
+// //		startButton.setAnimation(true);
+// //		startButton.setAnimationColor(new Color(1f, 1f, 1f, 0.1f));
+// //		
+// //		chatInput = new TextArea(0, 200, 600, 125, null, 0, Color.BLACK, Color.WHITE);
+// 		try {
+// 			logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo.png"));
+// 			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
+// 			background = ImageIO.read(getClass().getClassLoader().getResourceAsStream("callOfPudge.jpg"));
+// 		} catch (IOException e) {
+// 			e.printStackTrace();
+// 		}
 	}
 
 	@Override
@@ -75,14 +76,17 @@ public class MenuState extends State {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-//		if(chatInput.hasFocus()) {
-//			chatInput.keyPressed(e);
-//		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-//			chatInput.setFocus(true);
-//		}
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			gsm.changeState(new LobbyState(gsm), false);
+	public void keyPressed(int keyCode) {
+		if(keyCode == KeyEvent.VK_ENTER) {
+			gsm.changeState(new GameCreationState(gsm), false);
+// 	public void keyPressed(KeyEvent e) {
+// //		if(chatInput.hasFocus()) {
+// //			chatInput.keyPressed(e);
+// //		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+// //			chatInput.setFocus(true);
+// //		}
+// 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+// 			gsm.changeState(new LobbyState(gsm), false);
 		}
 	}
 
