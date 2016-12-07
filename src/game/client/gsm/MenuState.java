@@ -9,13 +9,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import game.client.GamePanel;
+import game.client.Music;
 
 public class MenuState extends State {
 
+	private Music music = new Music();
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
-		
+		music.mainmenu(true);
 	}
 
 	@Override
@@ -62,6 +64,7 @@ public class MenuState extends State {
 	@Override
 	public void keyPressed(int keyCode) {
 		if(keyCode == KeyEvent.VK_ENTER) {
+			music.mainmenu(false);
 			gsm.changeState(new GameCreationState(gsm), false);
 		}
 	}

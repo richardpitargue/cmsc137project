@@ -7,6 +7,7 @@ import javax.sound.sampled.Clip;
 public class Music {
 	
 	private int footStep = 0;
+	private static Clip clip;
 	
 	public Music(){
 		
@@ -23,11 +24,36 @@ public class Music {
        		eg.printStackTrace();
        	}
 	}
-	
-	public void background(){
+	public void mainmenu(boolean isPlaying){
 		
-       	playMusic("battle_music.wav");
+		try{
+	 	    if(isPlaying){
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("main-menu.wav"));
+	 	       	clip = AudioSystem.getClip();
+	 	 	    clip.open(audioInputStream);
+	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
+	 	    	clip.start();
+	 	    } else clip.stop();
+       	}catch(Exception eg){
+       		eg.printStackTrace();
+       	}
 	}
+	
+	public void background(boolean isPlaying){
+		
+		try{
+	 	    if(isPlaying){
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("battle_music.wav"));
+	 	       	clip = AudioSystem.getClip();
+	 	 	    clip.open(audioInputStream);
+	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
+	 	    	clip.start();
+	 	    } else clip.stop();
+       	}catch(Exception eg){
+       		eg.printStackTrace();
+       	}
+	}
+	
 	public void hookHit()
 	{
 		playMusic("hit.wav");
