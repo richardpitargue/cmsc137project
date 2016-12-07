@@ -48,7 +48,15 @@ public class GameManualState extends State{
 		g.drawImage(wasd, 350, 85, 200, 50, null);
 		
 		g.setColor(Color.WHITE);
-		g.drawString("There will be 2 Teams: RED and BLUE", 40, 100);
+		g.drawString("There will be 2 Teams:", 40, 100);
+		g.setColor(Color.RED);
+		g.drawString("RED", 170, 100);
+		g.setColor(Color.WHITE);
+		g.drawString("and", 200, 100);
+		g.setColor(Color.BLUE);
+		g.drawString("BLUE", 225, 100);
+		
+		g.setColor(Color.WHITE);
 		g.drawString("To move your player use:", 40, 130);
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("default", Font.BOLD, 13));
@@ -56,8 +64,8 @@ public class GameManualState extends State{
 		
 		g.setFont(new Font("default", Font.PLAIN, 12));
 		g.setColor(Color.WHITE);
-		g.drawString("To hook other players: AIM by using your mouse then LEFT-CLICK to launch a bloody hook ", 40, 160);
-		g.drawString("The hook wil snag the first unit it encounters, dragging the unit back to your place", 70, 190);
+		g.drawString("To hook other players: AIM by using your mouse then LEFT-CLICK to launch a bloody hook.", 40, 160);
+		g.drawString("The hook will snag the first unit it encounters, dragging the unit back to your place", 70, 190);
 		g.drawString("If it hooks a member of the other team, your team will gain a POINT.", 90, 210);
 		
 		g.drawString("First team to reach", 150, 240);
@@ -70,7 +78,10 @@ public class GameManualState extends State{
 		g.drawString("wins the game!", 345, 240);
 		
 		g.setColor(Color.RED);
-		g.drawString("That's all meat! Uh . . . I mean mate.", 70, 280);
+		g.drawString("That's all meat! Uh . . . I mean mate.", 80, 280);
+		
+		g.setColor(Color.WHITE);
+		g.drawString("PRESS ESC TO GO BACK TO MAIN MENU", 190, 310);
 		
 	}
 
