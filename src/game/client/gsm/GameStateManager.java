@@ -15,6 +15,7 @@ public class GameStateManager {
 	
 	private Stack<State> states;
 	public ArrayList<Player> players;
+	public ArrayList<Player> tempPlayers;
 	public ArrayList<Hook> hooks;
 	public String server = new String();
 	public int port;

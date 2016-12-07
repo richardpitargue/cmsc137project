@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -42,6 +44,7 @@ public class GameCreationState extends State {
 		hookSprite = new BufferedImage[4];
 		team1 = 0;
 		team2 = 0;
+		gsm.tempPlayers = gsm.players;
 		
 		ActionListener updater = new ActionListener()
 		{
@@ -49,7 +52,27 @@ public class GameCreationState extends State {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress, music);
+				gsm.player.update(gsm.players, gsm.channel, gsm.serverAddress);
+			}
+	
+		};
+		
+		ActionListener musicPlayer = new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				for(int i = 0; i < gsm.players.size(); i++)
+				{
+					if((gsm.players.get(i).getX() != gsm.tempPlayers.get(i).getX() || gsm.players.get(i).getY() != gsm.tempPlayers.get(i).getY()) && (!gsm.players.get(i).isHooked))
+					{
+						music.footStep();
+					}
+				}
+				
+				gsm.tempPlayers = new ArrayList<Player>(gsm.players);
 			}
 	
 		};
@@ -57,6 +80,8 @@ public class GameCreationState extends State {
 		
 		Timer broadcaster = new Timer(20, updater);
 		broadcaster.start();
+		Timer musicPlayerTimer = new Timer(20, musicPlayer);
+		musicPlayerTimer.start();
 		
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("backgound.png"));
@@ -143,19 +168,19 @@ public class GameCreationState extends State {
 
 		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			if(!playerCollision(0))
-			gsm.player.move(0, music);
+			gsm.player.move(0);
 		}
 		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT){
 			if(!playerCollision(2))
-			gsm.player.move(2, music);
+			gsm.player.move(2);
 		}
 		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN){
 			if(!playerCollision(1))
-			gsm.player.move(1, music);
+			gsm.player.move(1);
 		}
 		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT){
 			if(!playerCollision(3))
-			gsm.player.move(3, music);
+			gsm.player.move(3);
 		}
 		//System.out.println(gsm.pudges.get(i).player.getName());	
 
@@ -205,7 +230,7 @@ public class GameCreationState extends State {
 		System.out.println(e.getX());
 		if(!gsm.player.attacking && !gsm.player.isHooked)
 		{
-			gsm.player.attack(e.getX(), e.getY(), music);
+			gsm.player.attack(e.getX(), e.getY());
 			//hookPlayer();
 		}
 	}

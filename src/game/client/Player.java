@@ -194,7 +194,7 @@ public class Player implements Serializable
 
 	}
 	
-	public void move(int direction, Music music) {
+	public void move(int direction) {
 		
 		if(!attacking && !isHooked)
 		{
@@ -222,11 +222,10 @@ public class Player implements Serializable
 			}
 			frame = (frame + 1) % 4;
 			changed = true;
-			music.footStep();
 		}
 	}
 	
-	public void update(ArrayList<Player> players, DatagramChannel channel, InetSocketAddress serverAddress, Music music )
+	public void update(ArrayList<Player> players, DatagramChannel channel, InetSocketAddress serverAddress )
 	{
 		if(attacking)
 		{
@@ -339,7 +338,6 @@ public class Player implements Serializable
 						if(p.team != team)
 							score+=1;
 						
-						music.hookHit();
 					}
 				}
 				
@@ -352,11 +350,10 @@ public class Player implements Serializable
 		
 	}
 	
-	public void attack(int mouseX, int mouseY, Music music)
+	public void attack(int mouseX, int mouseY)
 	{
 		if(!attacking)
 		{
-			music.musicStretch();
 			double degrees = Math.toDegrees(Math.atan2(mouseY/2 - y,mouseX/2 - x));
 			
 			if(degrees < 0)
