@@ -320,7 +320,7 @@ public class Player implements Serializable
 				}
 				hookedOne = null;
 			}
-			else if (hookedOne == null)
+			else if (hookedOne == null && !hookBack)
 			{	
 				Rectangle hookBox = new Rectangle((int) hookX, (int) hookY, 50, 50);
 				
