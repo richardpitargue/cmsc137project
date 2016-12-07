@@ -26,12 +26,16 @@ public class Game{
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
-	public static final String username = "Benny";
-	public static final String ipAddress = "127.0.0.1";
+//	public static  String username = "Benny";
+//	public static final String ipAddress = "127.0.0.1";
+	public static String username;
+	public static String ipAddress;
 	//public static final String username = "Gege";
 	
-	public Game()
+	public Game(String usernameIn, String ipAddressIn)
 	{
+		username = usernameIn;
+		ipAddress = ipAddressIn;
 		JFrame frame = new JFrame("Call of Pudge: Modern Hookfare");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -47,7 +51,9 @@ public class Game{
 		//frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+		frame.toFront();
+		frame.setFocusable(true);
+		frame.requestFocus();		
 		
 		chatBox = new JTextArea(5,20);
 		chatBox.setEditable(false);
@@ -69,7 +75,11 @@ public class Game{
 	}
 	
 	public static void main(String[] args) {
-		new Game();
+		if(args.length < 2) {
+			System.out.println("Provide username and ip address");
+			System.exit(0);
+		}
+		new Game(args[0], args[1]);
 	}
 	
 public static void connect()
