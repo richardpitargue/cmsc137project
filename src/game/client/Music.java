@@ -88,4 +88,18 @@ public class Music {
 	{
 		playMusic("hook_" + number + ".wav");
 	}
+	public void winning(boolean isPlaying){
+		
+		try{
+	 	    if(isPlaying){
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("win_music.wav"));
+	 	       	clip = AudioSystem.getClip();
+	 	 	    clip.open(audioInputStream);
+	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
+	 	    	clip.start();
+	 	    } else clip.stop();
+       	}catch(Exception eg){
+       		eg.printStackTrace();
+       	}
+	}
 }

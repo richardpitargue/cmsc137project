@@ -135,6 +135,14 @@ public class GameCreationState extends State {
 				team1+=p.score;
 			else
 				team2+=p.score;
+			
+			if(team1 >= 20){
+				music.background(false);
+				gsm.changeState(new WinnerState(gsm, "BLUE"), false);
+			} else if(team2 >= 20){
+				music.background(false);
+				gsm.changeState(new WinnerState(gsm, "RED"), false);
+			}
 		}
 		
 		g.setColor(Color.BLUE);
