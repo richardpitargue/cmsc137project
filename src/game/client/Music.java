@@ -25,6 +25,7 @@ public class Music {
        		eg.printStackTrace();
        	}
 	}
+	
 	public void mainmenu(boolean isPlaying){
 		
 		try{
@@ -75,6 +76,12 @@ public class Music {
 		footStep++;
 		footStep = footStep%3;
 	}
+	
+	public void gameBegins()
+	{
+		playMusic("battle_begin.wav");
+	}
+	
 	public void musicStretch()
 	{
 		playMusic("stretch.wav");
@@ -84,10 +91,12 @@ public class Music {
 	{
 		playMusic("attack_" + number + ".wav");
 	}
+	
 	public void hit (int number)
 	{
 		playMusic("hook_" + number + ".wav");
 	}
+	
 	public void winning(boolean isPlaying){
 		
 		try{

@@ -39,6 +39,7 @@ public class GameCreationState extends State {
 		
 		this.music = new Music();
 		music.background(true);
+		music.gameBegins();
 		
 		sprites = new BufferedImage[4][4];
 		hookSprite = new BufferedImage[4];
