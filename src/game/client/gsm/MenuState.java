@@ -1,5 +1,6 @@
 package game.client.gsm;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -43,6 +44,8 @@ public class MenuState extends State {
 			logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("logo2.png"));
 			g.drawImage(logo2, 105, 55, 400, 25, null);
 			
+			g.setColor(Color.WHITE);
+			g.drawString("PRESS H FOR HELP", 240, 280);
 			g.drawString("PRESS ENTER TO CONTINUE", 215, 300);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,6 +69,8 @@ public class MenuState extends State {
 		if(keyCode == KeyEvent.VK_ENTER) {
 			music.mainmenu(false);
 			gsm.changeState(new GameCreationState(gsm), false);
+		} else if(keyCode == KeyEvent.VK_H) {
+			gsm.changeState(new GameManualState(gsm), false);
 		}
 	}
 
