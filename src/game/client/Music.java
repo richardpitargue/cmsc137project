@@ -16,6 +16,7 @@ public class Music {
 	public void playMusic(String filename)
 	{
 		try{
+			System.out.println(filename);
        	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream(filename));
 	       	Clip clip = AudioSystem.getClip();
 	 	    clip.open(audioInputStream);
@@ -57,6 +58,14 @@ public class Music {
 	public void hookHit()
 	{
 		playMusic("hit.wav");
+	}
+	public void attack(int number)
+	{
+		playMusic("attack_" + number + ".wav");
+	}
+	public void hit (int number)
+	{
+		playMusic("hook_" + number + ".wav");
 	}
 	public void footStep()
 	{
