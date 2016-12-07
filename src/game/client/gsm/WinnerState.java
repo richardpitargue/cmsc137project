@@ -23,7 +23,6 @@ public class WinnerState extends State{
 		music.winning(true);
 		try {
 			bg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("winning-page.png"));
-			pudge = ImageIO.read(getClass().getClassLoader().getResourceAsStream("pudge.png"));
 			victory = ImageIO.read(getClass().getClassLoader().getResourceAsStream("victory.png"));
 			trophy = ImageIO.read(getClass().getClassLoader().getResourceAsStream("trophy.png"));
 			red = ImageIO.read(getClass().getClassLoader().getResourceAsStream("red-team.png"));
