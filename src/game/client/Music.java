@@ -16,7 +16,6 @@ public class Music {
 	public void playMusic(String filename)
 	{
 		try{
-			System.out.println(filename);
        	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream(filename));
 	       	Clip clip = AudioSystem.getClip();
 	 	    clip.open(audioInputStream);

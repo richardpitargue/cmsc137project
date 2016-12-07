@@ -244,7 +244,7 @@ public class GameCreationState extends State {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println(e.getX());
+		//System.out.println(e.getX());
 		if(!gsm.player.attacking && !gsm.player.isHooked)
 		{
 			gsm.player.attack(e.getX(), e.getY());

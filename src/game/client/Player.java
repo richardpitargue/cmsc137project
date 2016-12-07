@@ -271,7 +271,7 @@ public class Player implements Serializable
 			
 			
 			
-			System.out.println(hookBack);
+			//System.out.println(hookBack);
 			if(!hookBack)
 			{
 				hookDistX += Math.abs(hookVelX);
@@ -288,7 +288,7 @@ public class Player implements Serializable
 			{
 				hookVelX = -hookVelX;
 				hookVelY = -hookVelY;
-				System.out.println("hookBack!");
+				//System.out.println("hookBack!");
 				hookBack = true;
 			}
 			else if(hookBack &&  hookTotalD <= 30)
@@ -384,7 +384,7 @@ public class Player implements Serializable
 			else if(315 <= degrees && degrees <= 360)
 				direction = 1;
 			
-			System.out.println("Attacking");
+			//System.out.println("Attacking");
 			
 			hookX = x;
 			hookY = y;

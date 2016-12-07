@@ -100,7 +100,7 @@ class Receiver implements Runnable{
 
 			while(true){
 				String msg = in.readLine();
-				System.out.println(msg);
+				//System.out.println(msg);
 				chatBox.append(msg + "\n");
 				chatBox.setCaretPosition(chatBox.getDocument().getLength());
 			}
