@@ -38,7 +38,7 @@ public class GameCreationState extends State {
 		super(gsm);
 		
 		this.music = new Music();
-		music.background();
+		music.background(true);
 		
 		sprites = new BufferedImage[4][4];
 		hookSprite = new BufferedImage[4];
