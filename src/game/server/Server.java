@@ -183,7 +183,8 @@ public class Server implements Runnable {
 	
 	
 	public static void main(String[] args) {
-		Server server = new Server(1);
+		int numberOfPlayers = Integer.parseInt(args[0]);
+		Server server = new Server(numberOfPlayers);
 		server.run();
 	}
 

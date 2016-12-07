@@ -16,7 +16,7 @@ public class Music {
 	public void playMusic(String filename)
 	{
 		try{
-       	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream(filename));
+       	    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource(filename));
 	       	Clip clip = AudioSystem.getClip();
 	 	    clip.open(audioInputStream);
 	 	    clip.start();
@@ -29,7 +29,7 @@ public class Music {
 		
 		try{
 	 	    if(isPlaying){
-	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("main-menu.wav"));
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("main-menu.wav"));
 	 	       	clip = AudioSystem.getClip();
 	 	 	    clip.open(audioInputStream);
 	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -44,7 +44,7 @@ public class Music {
 		
 		try{
 	 	    if(isPlaying){
-	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("battle_music.wav"));
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("battle_music.wav"));
 	 	       	clip = AudioSystem.getClip();
 	 	 	    clip.open(audioInputStream);
 	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -100,7 +100,7 @@ public class Music {
 		
 		try{
 	 	    if(isPlaying){
-	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("win_music.wav"));
+	 	    	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResource("win_music.wav"));
 	 	       	clip = AudioSystem.getClip();
 	 	 	    clip.open(audioInputStream);
 	 	    	clip.loop(Clip.LOOP_CONTINUOUSLY);
