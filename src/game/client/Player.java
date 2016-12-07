@@ -11,6 +11,7 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player implements Serializable
 {
@@ -33,6 +34,8 @@ public class Player implements Serializable
 	public boolean attacking;
 	public String hookedOne;
 	public boolean isHooked;
+	public int attackSound;
+	public int hitSound;
 	
 	public Player(String name, SocketAddress address)
 	{
@@ -57,6 +60,8 @@ public class Player implements Serializable
 		this.isHooked = false;
 		this.score = 0;
 		this.team = false;
+		this.attackSound = -1;
+		this.hitSound = -1;
 	}
 	public Player()
 	{
@@ -82,6 +87,8 @@ public class Player implements Serializable
 		this.isHooked = player.isHooked;
 		this.score = player.score;
 		this.team = player.team;
+		this.attackSound = player.attackSound;
+		this.hitSound = player.hitSound;
 	}
 	public boolean getHookBack()
 	{
@@ -284,10 +291,11 @@ public class Player implements Serializable
 				System.out.println("hookBack!");
 				hookBack = true;
 			}
-			else if(hookBack &&  hookTotalD <= 75)
+			else if(hookBack &&  hookTotalD <= 30)
 			{
 				attacking = false;
 				hookBack = false;
+				attackSound = -1;
 				if(hookedOne != null)
 				{
 					for(Player p: players)
@@ -308,6 +316,7 @@ public class Player implements Serializable
 								byte[] buf = new byte[512]; 
 								buf = bStream.toByteArray();
 								channel.send(ByteBuffer.wrap(buf), serverAddress);
+								hitSound = -1;
 								
 							}
 							catch(Exception e)
@@ -329,7 +338,9 @@ public class Player implements Serializable
 					
 					Rectangle playerBox = new Rectangle( p.getX(), p.getY(), 20, 20);
 					if(hookBox.intersects(playerBox)){
-						System.out.println("HOOKED");
+						
+						Random rand = new Random();
+						hitSound = rand.nextInt(10);
 						hookBack = true;
 						hookVelX = -hookVelX;
 						hookVelY = -hookVelY;
@@ -354,6 +365,9 @@ public class Player implements Serializable
 	{
 		if(!attacking)
 		{
+			
+			Random rand = new Random();
+			attackSound = rand.nextInt(15);
 			double degrees = Math.toDegrees(Math.atan2(mouseY/2 - y,mouseX/2 - x));
 			
 			if(degrees < 0)
@@ -378,8 +392,8 @@ public class Player implements Serializable
 			hookDistX = 0;
 			hookDistY = 0;
 			
-			hookVelX = (mouseX/2) - x;
-			hookVelY = (mouseY/2) - y;
+			hookVelX = (mouseX/2) - x - 25;
+			hookVelY = (mouseY/2) - y - 25;
 			
 			double hypot = Math.hypot(hookVelX, hookVelY);
 			
