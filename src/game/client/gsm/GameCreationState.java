@@ -67,9 +67,14 @@ public class GameCreationState extends State {
 				for(int i = 0; i < gsm.players.size(); i++)
 				{
 					if((gsm.players.get(i).getX() != gsm.tempPlayers.get(i).getX() || gsm.players.get(i).getY() != gsm.tempPlayers.get(i).getY()) && (!gsm.players.get(i).isHooked))
-					{
 						music.footStep();
-					}
+					
+					
+					if(gsm.players.get(i).attacking && !gsm.tempPlayers.get(i).attacking)
+						music.musicStretch();
+					
+					if(gsm.players.get(i).hookedOne != gsm.tempPlayers.get(i).hookedOne)
+						music.hookHit();
 				}
 				
 				gsm.tempPlayers = new ArrayList<Player>(gsm.players);
