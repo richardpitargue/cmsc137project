@@ -73,7 +73,7 @@ public class GameCreationState extends State {
 					if(gsm.players.get(i).attacking && !gsm.tempPlayers.get(i).attacking)
 						music.musicStretch();
 					
-					if(gsm.players.get(i).hookedOne != gsm.tempPlayers.get(i).hookedOne)
+					if(gsm.players.get(i).hookedOne != null && gsm.tempPlayers.get(i).hookedOne == null)
 						music.hookHit();
 				}
 				
