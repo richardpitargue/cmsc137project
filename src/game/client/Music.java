@@ -59,14 +59,7 @@ public class Music {
 	{
 		playMusic("hit.wav");
 	}
-	public void attack(int number)
-	{
-		playMusic("attack_" + number + ".wav");
-	}
-	public void hit (int number)
-	{
-		playMusic("hook_" + number + ".wav");
-	}
+
 	public void footStep()
 	{
 		switch(footStep)
@@ -87,5 +80,12 @@ public class Music {
 		playMusic("stretch.wav");
 	}
 	
-	
+	public void attack(int number)
+	{
+		playMusic("attack_" + number + ".wav");
+	}
+	public void hit (int number)
+	{
+		playMusic("hook_" + number + ".wav");
+	}
 }
