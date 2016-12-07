@@ -27,6 +27,7 @@ public class Game{
 	public static final int HEIGHT = 325;
 	public static final int SCALE = 2;
 	public static final String username = "Benny";
+	public static final String ipAddress = "127.0.0.1";
 	//public static final String username = "Gege";
 	
 	public Game()
@@ -36,7 +37,7 @@ public class Game{
 		frame.setResizable(false);
 		frame.setSize(WIDTH * SCALE, HEIGHT * SCALE + 150);
 		frame.setLayout(null);
-		GamePanel p = new GamePanel("127.0.0.1", username, 1234);
+		GamePanel p = new GamePanel(ipAddress, username, 1234);
 		
 		
 		frame.add(p);
@@ -74,7 +75,7 @@ public class Game{
 public static void connect()
 {
 	try {
-		client = new Socket("127.0.0.1", 1235);
+		client = new Socket(ipAddress, 1235);
 		out = new PrintWriter(client.getOutputStream());
 		out.println(username);
 		out.flush();
